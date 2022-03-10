@@ -1,0 +1,42 @@
+.code {
+  @apply rounded-md shadow-lg text-white my-6;
+  background: rgba(30, 30, 30, 0.9);
+
+  p {
+    text-indent: 0 !important;
+    line-height: 1.5 !important;
+  }
+
+  b{
+      color:rgb(255, 201, 83);
+      font-weight: normal;
+  }
+
+  em{
+    color:rgb(19, 216, 98);
+    font-style: normal;
+  }
+
+  pre {
+    font-family: "Cascadia Code" !important;
+    overflow:auto;
+    padding: 0;
+  }
+
+  > pre {
+    padding: 1.25em;
+  }
+
+  code {
+    font-family: "Cascadia Code" !important;
+  }
+}
+
+.prism-code{
+  
+  pre{
+    @apply rounded-md shadow-lg my-6;
+    overflow:auto;
+    background: rgba(30, 30, 30, 0.9)!important;
+  }
+}

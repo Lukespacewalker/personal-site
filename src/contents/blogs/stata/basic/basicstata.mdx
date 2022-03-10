@@ -1,0 +1,376 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+	type: "blog",
+	tag: "stata",
+	date: "2019-09-17 14:16",
+	title: "พื้นฐาน STATA ตอนที่ 1",
+	authors: ["myself"],
+	excerpt: "วิธีการใช้โปรแกรม STATA/MP 16.0 พื้นฐาน โดยเป็นเนื้อหาเทอมต้นของวิชา Data Analysis",
+    background:"basic.jpg",
+	images: ["basic.jpg","log1.png","log2.png","log3.png", "graph1.png","graph2.png","graph3.png"]
+}
+
+เนื้อหาในบทความนี้เป็นการรวบรวมคำสั่งที่ควรรุ้ และมีการสอนในวิชา Data Analysis เทอมต้น ปีการศึกษา 2562 ประกอบไปด้วยเรื่อง Log file , การจัดการข้อมูลพื้นฐาน
+Descriptive statistics, Parametric statistics, Hypothesis Testing
+
+<div className="emphasize">
+
+# คำสั่ง Help
+สำคัญมากแนะให้พยายามจำชื่อ คำสั่ง ที่ใช้บ่อยได้ เพราะจะได้ใช้ดูคู่มือได้ง่าย เช่น ```help cc``` ก็จะดูได้ว่าคำสั่ง Case control study อยุ่เมนุไหน และทำอะไรได้บ้าง
+
+</div>
+
+<div className="emphasize2">
+
+# Logfile
+
+<div className="two-grid">
+    <GatsbyImage image={props.images[1].childImageSharp.gatsbyImageData} alt="poster" style={{maxHeight:`500px`}} imgStyle={{objectFit:`contain`}} />
+    <GatsbyImage image={props.images[2].childImageSharp.gatsbyImageData} alt="poster" style={{maxHeight:`500px`}} imgStyle={{objectFit:`contain`}}/>
+</div>
+
+**Open log file**
+File > Log > Begin … จากนั้น เลือก File Extension  เป็น .log หรือ .smcl จากนั้นหากมีไฟล์อยู่แล้ว ก็เลือกว่าจะเขียนต่อ หรือเขียนทับ
+
+<GatsbyImage image={props.images[3].childImageSharp.gatsbyImageData} alt="poster" style={{maxHeight:`500px`}} imgStyle={{objectFit:`contain`}}/>
+
+**Close log file**
+File > Log > Close ต้องไม่ลืมปิด ไฟล์เมื่อใช้เสร็จ
+
+</div>
+
+# Operators
+```
+AND &  
+OR |  
+NOT !	EQUAL ==  
+NOT EQUAL !=  
+GREATER > LESSER <  
+GREATER OR EQUAL >=  
+LESSER OR EQUAL <=  
+```
+# Missing Values
+ใน STATA นั้น Missing Value คือ Positive Infinity ก็คือค่าที่มากที่สุด ดังนั้น เวลาเราใช้ > หรือ >= ต้องตรวจสอบเรื่อง Missing value ด้วย โดยใช้
+```
+missing(var1) หรือ var1 != .
+```
+## User Missing to System Missing Conversion
+User missing คือค่าที่เรากำหนดเองว่าแปลว่า missing ซึ่ง ไม่มีความหมายอะไรใน STATA และมันจะเห็นว่าเป็น Valid Value ดังนั้นเราต้องแปลงมันให้เป็น System Missing ก่อน
+
+เช่น แปลง age , bwt, height ให้ 9 เป็น System Missing จากนั้นแปลง income ให้ 999999 เป็น System Missing
+```
+. mvdecode age bwt height, mv(9=.)
+. mvdecode income, mv(999999=.)
+```
+# Common Commands
+## Codebook
+ต้องการดูประเภทของ Variable ว่าเป็น float , double ดูว่ามี missing range frequency อะไรบ้าง
+```
+ดูทั้งหมด
+. codebook
+ดูแค่ตัวแปร id
+. codebook id
+----------------------------------------------------------------------------------------------------------------------------------
+id                                                                                                                              id
+----------------------------------------------------------------------------------------------------------------------------------
+
+                  type:  numeric (int)
+
+                 range:  [1,4500]                     units:  1
+         unique values:  4,500                    missing .:  0/4,500
+
+                  mean:    2250.5
+              std. dev:   1299.18
+
+           percentiles:        10%       25%       50%       75%       90%
+                             450.5    1125.5    2250.5    3375.5    4050.5
+```
+## Sorting
+ต้องการเรียงลำดับ age จากน้อยไปมา (Ascending) และ bwt จากมากไปน้อย (Descending)
+```
+gsort +age -bwt
+```
+## Drop
+ต้องการลบ Variable age
+```
+drop age
+```
+## Display
+
+ต้องการคำนวณ $$\frac{\sqrt{3}-5}{2}$$
+```
+display (sqrt(3)-5)/2
+```
+## Label
+กำหนดป้ายชื่อที่ชื่อว่า Bool โดยให้ 0 “False” 1 “True”
+```
+label define Bool 0 “False” 1 “True”
+```
+และใช้กับตัวแปร Jelly ที่เป็น Nominal Scale ว่า 0 = False 1 = True
+```
+label value Jelly Bool
+```
+# Graphic
+## Box plot
+ต้องการสร้าง Box plot ของ hsCRP แบบแนวนอน
+```
+. graph box hsCRP, horizontal
+```
+
+<GatsbyImage image={props.images[4].childImageSharp.gatsbyImageData} alt="poster" style={{maxHeight:`500px`}} imgStyle={{objectFit:`contain`}}/>
+
+## Histogram
+ต้องการสร้าง Histogram ของ age พร้อม Normal Curve
+```
+. histogram hsCRP, normal
+```
+
+<GatsbyImage image={props.images[5].childImageSharp.gatsbyImageData} alt="poster" style={{maxHeight:`500px`}} imgStyle={{objectFit:`contain`}}/>
+
+## Ladder of power
+อยากรู้ว่าจะใช้ Function อะไรในการ Transform ข้อมูลแล้วจะ Normal Distribution
+```
+. gladder hsCRP
+```
+
+<GatsbyImage image={props.images[6].childImageSharp.gatsbyImageData} alt="poster" imgStyle={{objectFit:`contain`}}/>
+
+# Variable Generation
+## Generate (gen, generate)
+ต้องการสร้างตัวแปร var1 โดยให้ทุกค่าเป็น system missing
+```
+. generate var1 = .
+```
+ต้องการสร้างตัวแปร var2 โดยให้ค่าเท่ากับ 2 เมื่อ age >= 50 และไม่ใช่ missing
+```
+. generate var2 = 2 if age >= 50 & age !=. 
+หรือ
+. generate age = 2 if age >=50 & !missing(age)
+```
+## Replace
+ต่างจาก generate คือ ใช้แก้ไขข้อมูลของ variable ที่มีอยู่แล้ว ซึ่งหากเราใช้คำสั่ง generate ชื่อตัวแปรที่มีอยู่แล้ว จะ error “variable var1 already defined” จึงต้องใช้ replace แทน
+ต้องการสร้างตัวแปร var1 โดยให้ทุกค่าเป็น system missing จากนั้นเปลี่ยนทุกค่าให้เป็น 1
+```
+. generate var1 = .
+. replace var1 = 1
+```
+
+ลองมาใช้รวมกันดู ต้องการสร้างตัวแปร age_group โดยที่ให้มีความสัมพันธ์ดังนี้
+
+<div className="two-grid">
+
+<Code human>
+
+กำหนดความสัมพันธ์ดังนี้
+age >= 50 age_group = 3
+30 <= age < 50 age_group = 2
+10 <= age < 30 age_group = 1
+age < 10 age_group = 0
+
+</Code>
+
+```
+. generate age_group = .	
+. replace age_group = 3 if age >= 50 & !missing(age)
+. replace age_group = 2 if age <50
+. replace age_group = 1 if age <30
+. replace age_group = 0 if age <10
+หรือ
+. generate age_group = cond(age<10,0,cond(age<30,1,cond(age<50,2,3))) if !missing(age)
+```
+
+</div>
+
+cond มี Syntax ดังนี้ cond(เงื่อนไข, สิ่งที่จะทำหรือค่าที่จะแทนเมื่อ True, สิ่งที่จะทำหรือค่าที่จะแทนเมื่อ False)
+
+# Descriptive Statistics + Test for Association
+## Count (count)
+นับทุกคนที่ income > 20,000
+```
+. count if income > 20000 & !missing(income)
+```
+## Summarize (sum, summarize)
+ต้องการดู Observation Mean Sd Min Max ของ age
+```
+. sum age
+```
+ต้องการดู Observation Mean Sd/Variance Min Max  Skewness Kurtosis Percentile ของ age
+```
+. sum age, detail
+```
+## Tabulate (tab, tabulate)
+ต้องการดู One-way table ของ gender
+```
+. tab gender
+```
+ต้องการดู One-way table ของ  religion maritialStatus
+```
+. tab1 religion maritialStatus
+```
+ต้องการดู Two-way table ของ sandwich diarrhea โดยแบ่งกลุ่มเป็น gender ระหว่างชายหญิง
+```
+. by gender,sort: tab sandwich diarrhea
+```
+ต้องการดู Two-way table ของ sandwich diarrhea และอยากรู้ Incidence rate ของการเกิด diarrhea ในคนที่กิน/ไม่กิน Sandwich และอยากรู้ expect value, chi2, fisher’s exact test
+```
+. tab sandwich diarrhea, row expect chi2 exact
+```
+## Table calculator (tabi)
+|   | จำนวนวันที่ฝนตกน้อย | จำนวนวันที่ฝนตกปานกลาง | จำนวนวันที่ฝนตกมาก	| 
+|---|-------|-----| ----- |
+|ปี 59|	200	|100|	65|
+|ปี 60|	100	|200|	65|
+|ปี 61|	150	|150|	65|
+
+มีข้อมูลดังนี้ ต้องการหา Row% Chi2 Fisher Exact Test
+```
+. tabi 200 100 65 \ 100 200 65 \ 150 150 65 , row chi2 exact
+```
+## Compact Table of Summary Statistic (tabstat)
+ต้องการหา mean sd p25 median p75 iqr variance ของ age
+```
+. tabstat age, statistic(mean sd p25 p50 p75 iqr var)
+```
+ต้องการหา mean sd ของ bwt แยกตาม gender
+```
+. tabstat bwt, statistic(mean sd) by(gender)
+```
+## Case control studies (cc) / Case control calculator (cci)
+Case control study โดยที่ ill เป็น Case variable ส่วน vanilla เป็น Exposure variable พร้อมทั้งหา  95%CI ของ OR แบบ Exact และ ทดสอบ Fisher’s Exact Test
+```
+cc case_var control_var
+. cc ill vanilla, exact
+```
+แต่หากต้องการแบบ Woolf approximation แบบที่เรียนในวิชา Statistic
+```
+cc ill vanilla, woolf exact
+```
+ส่วนถ้ามีข้อมูลมาแล้วเป็นตารางดังนี้ (ตั้งใจตั้งให้สลับกัน ไม่ควรจำการวางตาราง)
+
+|	|ไม่ป่วย  | ป่วย |
+|---|-------|-----|
+|ไม่กิน Vanilla|	18|	3|
+|กิน Vanilla|	11|	43|
+สามารถใช้ calculator ได้เลย ในการหา OR 95%OR แบบ Exact และ Fisher Exact Test
+```
+cci [caseที่exposed] [caseที่ไม่exposed] [controlที่exposed] [controlที่ไม่exposed]
+. cci 43 3 11 18, exact
+```
+## Cohort studies (cs) / Case studies calculator (csi)
+Cohort study โดยที่ vanilla เป็น Exposure variable และ ill เป็น Case variable และหา RR และ ทดสอบ Fisher’s Exact Test
+**จะเห็นว่าทั้ง cs และ cc มี syntax เหมือนกันคือ case_var ตามด้วย control_var**
+```
+cs case_var control_var
+. cs ill vanilla, exact
+```
+ส่วนถ้ามีข้อมูลมาแล้วเป็นตารางดังนี้ (ตั้งใจตั้งให้สลับกัน ไม่ควรจำการวางตาราง)
+
+|	|ไม่ป่วย  | ป่วย |
+|---|-------|-----|
+|ไม่กิน Vanilla|	18|	3|
+|กิน Vanilla|	11|	43|
+สามารถใช้ calculator ได้เลย ในการหา RR และ Fisher Exact Test
+```
+csi [caseที่exposed] [caseที่ไม่exposed] [controlที่exposed] [controlที่ไม่exposed]
+. csi 43 3 11 18, exact
+```
+
+
+
+# Hypothesis Testing
+## Variance-comparison Test (sdtest)
+ก่อนจะ Independent T-Test ต้องทดสอบก่อนว่า Variance มันต่างกันหรือไม่ เช่นระหว่าง var1 กับ var2 โดยมี Null Hypothesis เป็น σ^2/σ^2 =1 Alternate คือ != 1
+ต้องการทดสอบว่า variance ของ meanpain ระหว่าง gender (0,1) ต่างกันหรือไม่ (Two sample using group)
+```
+. sdtest meanpain, by(gender)
+```
+ต้องการทดสอบว่า variance ของ meanpain กับ lastpain ต่างกันหรือไม่ (Two sample using variable)
+```
+. sdtest meanpain==lastpain
+```
+หากมีเลขอยู่แล้วก็สามารถใช้ Calculator ได้ เช่น sample1 90 ตัว mean 30 sd 20 sample2 100 ตัว mean 40 sd 30
+```
+sdtesti [Sample1_Obs] [Sample1_Mean] [Sample1_SD] [Sample2_Obs] [Sample2_Mean] [Sample2_SD]
+. sdtesti 90 30 20 100 40 30
+```
+หรือไม่มี mean ก็ได้ 
+```
+. sdtesti 90 . 20 100 . 30
+```
+## T-test (ttest)
+### กรณี One-sample 
+อยากรู้ว่า bwt ต่างจากประชากรเท่าไปที่ 60 หรือไม่ ที่ Significant level 0.05
+```
+. ttest bwt==60, level(95)
+```
+หากมีเลขอยู่แล้วต้องการใช้ calculator เช่น sample 50 ตัว mean 39 sd 11 ประชากร mean 42 Significant level 0.05
+```
+ttesti [SampleSize] [Mean] [SD] [HypothesizedMean] , level(95)
+. ttesti 50 39 11 42, level(95)
+```
+### กรณี Independent Two-sample 
+ต้องดูเรื่อง Variance ก่อนว่าเท่าไม่เท่ากันก่อนด้วย Variance-comparison test
+ต้องการทดสอบว่า mean ของ meanpain ระหว่าง gender (0,1) ต่างกันหรือไม่ ที่ Significant level 0.05 (Two sample using group)
+```
+ไม่เท่า 
+. ttest meanpain , by(gender) unequal level(95)
+เท่า
+. ttest meanpain, by(gender) level(95)
+```
+ต้องการทดสอบว่าmean ของ meanpain กับ lastpain ต่างกันหรือไม่  ที่ Significant level 0.05 (Two sample using variable)
+```
+ไม่เท่า 
+. ttest meanpain==lastpain, unpaired unequal level(95)
+เท่า
+. ttest meanpain==lastpain, unpaired level(95)
+```
+เช่นกันหากมีเลขอยู่แล้วว่า 
+เช่น Sample 1 มี 11 Obs mean 10 sd 1.9 Sample 2 มี 22 obs mean 20 sd 2.9 ที่ Significant level 0.05
+```
+ttesti [Sample1_Obs] [Sample1_Mean] [Sample1_SD] [Sample2_Obs] [Sample2_Mean] [Sample2_SD], level(95)
+ไม่เท่า 
+. ttesti 11 10 1.9 22 20 2.9, unequal level(95)
+เท่า
+. ttesti 11 10 1.9 22 20 2.9, level(95)
+```
+### กรณี Dependent sample
+ทดสอบว่า mean ของ before และ after ต่างกันไหม ที่ Significant level 0.05
+```
+. ttest before==after, level(95)
+```
+## Z-test for Proportion Test
+### One sample
+ต้องการทดสอบว่า smoking (0,1) นี้มากกว่าค่าในประชากร 30% หรือไม่ ที่ Significant level 0.05
+```
+. prtest smoking==0.3, level(95) 
+ดูที่ Ha ที่เป็น p > 0.3
+```
+
+หากมีเลขอยู่แล้วเช่น Sample 200 มีสัดส่วน 40/200 = 0.2 ประชากร 0.1 ที่ Significant level 0.05
+```
+prtesti [SampleSize] [Proportion] [Hypothesized_Proportion]
+. prtesti 200 0.2 0.10, level(95)
+```
+หรือไม่ต้องการใส่ proportion ก็ใช้
+```
+. prtesti 200 40 .10,count level(95)
+```
+### Two Samples
+ต้องการทดสอบว่า สัดส่วนของสูบบุหรี่ smoking (0,1) ระหว่างเพศ gender (0,1) ต่างกันหรือไม่ ที่ Significant level 0.05 (Two sample using group)
+```
+. prtest smoking, by(gender) level(95)
+```
+ต้องการทดสอบว่า สัดส่วนของสูบบุหรี่ smoking (0,1) และสัดส่วนของดูดกัญชา marijuana (0,1) ต่างกันหรือไม่ ที่ Significant level 0.05 (Two sample using variable)
+```stata-out
+. prtest smoking==marijuana level(95)
+```
+หากมีเลขอยู่แล้วเช่น Sample1 200 มีสัดส่วน $$\frac{40}{200} = 0.2$$ Sample2 400 มีสัดส่วน $$\frac{20}{400} = 0.05$$ ที่ Significant level 0.05
+```stata-out
+prtesti [Sample1_Size] [Sample1_Proportion] [Sample2_Size] [Sample2_Proportion]
+. prtesti 200 0.2 400 0.05, level(95)
+```
+หรือไม่ต้องการใส่ proportion ก็ใช้
+```stata-out
+. prtesti 200 40 400 20,count level(95)
+```

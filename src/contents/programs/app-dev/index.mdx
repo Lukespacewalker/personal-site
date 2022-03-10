@@ -1,0 +1,87 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+  type: "program",
+  tag: "win10nigththeme",
+  date: "2020-05-13 01:09",
+  title: "Windows 10 Night Light Theme Synchronization",
+  authors: ["myself"],
+  excerpt: "โปรแกรมที่จะช่วยเปลี่ยน Theme ของ Windows 10 ไปตาม Night Light",
+  background: "win10-nightlight-theme-sync.jpg",
+  images: [
+    "win10-nightlight-theme-sync.jpg",
+    "win10-nightlight-theme-sync-2.png",
+    "win10-nightlight-theme-sync-3.png"
+  ],
+};
+
+โปรแกรมที่จะช่วยเปลี่ยน Theme ของ Windows 10 ไปตาม Night Light
+
+## อัพเดต 1.2
+
+* ขณะที่แอพอยุ่ในโหมด Monitor จะสามารถเปลี่ยนการตั้งค่าของแอพตามการตั้งธีมใน Windows 10 Settting ได้
+* คอมพิวเตอร์บางเครื่องมี Night Light Data ไม่เหมือนเครื่องอื่น ดังนั้นแทนที่จะหา Toggle จาก byte array index ที่กำหนดไว้ จึงเปลี่ยนไปหา pattern 0x43, 0x42, 0x01, 0x00 และหา Toggle ซึ่งเป็น 2 bytes ที่ตามหลัง 0x10 0x00
+* การแจ้งเตือนจะปรากฎขึ้นมา เมื่อแอพถูกย่อขนาดในขณะที่ยังทำงานอยู่
+
+## ดาวน์โหลด
+
+รองรับ Windows 10 รุ่น 1903 ขึ้นไปเท่านั้น (1909,2004)
+
+สามารถโหลดได้จาก [GitHub](https://github.com/Lukespacewalker/Win10NightLightThemeSync/releases/) โดยจะมีโปรแกรม 2 รุ่น ให้เลือก
+
+1. ไฟล์ที่เล็กกว่าจำเป็นต้องมี  .Net Core 3.1.3 runtime ติดตั้งอยุ่ในคอมพิวเตอร์ ซึ่งสามารถโหลดได้จาก [Microsoft](https://dotnet.microsoft.com/download/dotnet-core/3.1)  หรือโหลดโดยตรงที่ [x64](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.3-windows-x64-installer), [x86](https://dotnet.microsoft.com/download/dotnet-core/thank-you/runtime-desktop-3.1.3-windows-x86-installer)
+
+2. ไฟล์ที่ใหญ่กว่า (_x64) มี Runtime อยู่ในไฟล์แล้ว ซึ่งถ้าคุณได้ติดตั้ง .Net Core 3.1.3 runtime แล้ว ก็ไม่จำเป็นต้องโหลดไฟล์นี้
+## เบื้องหลัง การทำงาน
+
+โปรแกรมจะตรวจสอบ <span id="regkey">Registry Key</span> ตามเส้นทางนี้
+
+```
+HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\CloudStore\Store\DefaultAccount\Current\default$windows.data.bluelightreduction.bluelightreductionstate\windows.data.bluelightreduction.bluelightreductionstate
+```
+
+<div className="two-asymmetrical-grid">
+  <GatsbyImage
+    image={props.images[1].childImageSharp.gatsbyImageData}
+    alt="poster"
+    style={{ width: `400px`, justifySelf:`center` }}
+    imgStyle={{objectFit:`contain`}}
+  />
+  <div>
+
+### Night Light
+สามารถเปิดปิดการทำงานได้จาก Action Center หรือ สามารถเข้าไปตั้งเวลาเปิดปิดเองหรือเปิดปิดตามเวลา Sunset / Sunrise ได้จาก Settings  
+
+  </div>
+</div>
+
+<div className="two-asymmetrical-grid" style={{marginTop:`2em`}}>
+  <GatsbyImage
+    image={props.images[2].childImageSharp.gatsbyImageData}
+    alt="poster"
+    style={{ width: `400px` , justifySelf:`center`}}
+    imgStyle={{objectFit:`contain`}}
+  />
+  <div>
+
+
+Value ชื่อ NightLightValueName ที่อยู่ใน <a href="#regkey">Registry Key</a> ข้างต้น ซึ่งเก็บข้อมูลเป็น Binary
+
+จะมีการเปลี่ยนแปลงโดย Byte ที่ 24 จะถูกเพิ่มเข้ามาและมีค่าเท่ากับ 16 (10 ในฐาน 16 หากดูใน regedit) และ Byte ที่ 25 จะถูกเพิ่มเข้ามา มีค่าเท่ากับ 0
+
+เมื่อ Night Light ถูกปิดการทำงาน Byte ที่ 24 - 25 จะถูกลบออกไป และขนาดของข้อมูลสั้นลง
+
+  </div>
+</div>
+
+
+จากนั้นโปรแกรมก็จะไปตั้งค่า Theme ของ Windows 10 ที่
+
+```
+HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize
+```
+
+ใน Key นี้จะมี 2 Values คือ **SystemUsesLightTheme** และ **AppsUseLightTheme** โดยเปลี่ยนค่าจาก 0 เป็น 1 ก็จะเป็นการใช้
+Light Theme 
+
+แค่นี้ก็จะสามารถเปลี่ยน Theme ตาม Night Light ได้แล้ว

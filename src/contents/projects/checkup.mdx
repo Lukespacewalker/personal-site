@@ -1,0 +1,33 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+	type: "project",
+	tag: "checkup",
+	date: "2019-11-30 14:16",authors: ["myself"],
+	title: "ระบบสารสนเทศ OcMed โรงพยาบาลสระบุรี",
+	excerpt: "โปรแกรมช่วยออกใบรับรองแพทย์ โรงพยาบาลสระบุรี",
+	background: "checkup.jpg",
+	images: ["checkup.jpg","poster.jpg"]
+}
+
+# ที่มา
+
+ปรับปรุงระบบช่วยออกใบรับรองแพทย์ โรงพยาบาลสระบุรี
+
+# Technology stack ที่ใช้
+## Front End
+
+- Windows Presentation Foundation
+
+## Back End
+
+- Asp.Net Core (.NET 3.1)
+- Microsoft SQL Server โดยสร้างฐานข้อมูลแบบ Code-First โดยใช้ Entity Framework Core
+
+## สถานะปัจจุบัน
+
+สามารถเข้าดูได้ที่ [saraburi-app.netlify.com](https://saraburi-app.netlify.com/)
+
+# Screenshot
+
+<GatsbyImage image={props.images[1].childImageSharp.gatsbyImageData} alt="poster" />

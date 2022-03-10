@@ -1,0 +1,129 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+  type: "blog",
+  tag: "googleclassroom",
+  date: "2020-05-06 18:09",
+  title: "Bookmarklet เพื่อเพิ่ม Hotkey สำหรับการให้คะแนนใน Google Classroom",
+  authors: ["myself"],
+  excerpt: "Bookmarklet เพื่อช่วยให้การให้คะแนนใน Google Classroom ง่ายขึ้น",
+  background: "bg.jpg",
+  images: ["bg.jpg","classroom1.png","classroom2.png"],
+};
+
+export const bookmarkUrl = `javascript:(function()%7B%2F%2F%20Section%3A%20Restyle%0Alet%20main%20%3D%20document.querySelector(%22main%22)%3B%0A%2F%2F%20%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B9%88%E0%B8%B2%E0%B8%87%20Div%20%E0%B8%82%E0%B8%B6%E0%B9%89%E0%B8%99%E0%B8%A1%E0%B8%B2%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88%0Alet%20newDiv%20%3D%20document.createElement(%22div%22)%3B%0AnewDiv.id%20%3D%20%22grid%22%3B%0AnewDiv.style.display%20%3D%20%22flex%22%3B%0AnewDiv.style.flexDirection%20%3D%20%22row%22%3B%0Amain.firstChild.after(newDiv)%3B%0A%2F%2F%20%E0%B8%82%E0%B8%A2%E0%B8%B1%E0%B8%9A%E0%B8%8A%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%84%E0%B8%B0%E0%B9%81%E0%B8%99%E0%B8%99%20%E0%B9%81%E0%B8%A5%E0%B8%B0%20%E0%B9%80%E0%B8%A7%E0%B8%A5%E0%B8%B2%E0%B8%AA%E0%B9%88%E0%B8%87%E0%B8%87%E0%B8%B2%E0%B8%99%E0%B8%82%E0%B8%B6%E0%B9%89%E0%B8%99%E0%B8%A1%E0%B8%B2%E0%B8%94%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%9A%E0%B8%99%20%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%AA%E0%B8%B2%E0%B8%A1%E0%B8%B2%E0%B8%A3%E0%B8%96%E0%B8%AB%E0%B8%94%20Sidebar%20%E0%B9%84%E0%B8%94%E0%B9%89%0Alet%20gradeDiv%20%3D%20document.querySelector(%22div%5Bjsname%3DQjIALd%5D%22)%3B%0AgradeDiv.style.padding%20%3D%200%3B%0AgradeDiv.style.flexGrow%20%3D%201%3B%0AgradeDiv.style.flexShrink%20%3D%200%3B%0AgradeDiv.style.flexBasis%20%3D%20%22auto%22%3B%0AgradeDiv.style.display%20%3D%20%22flex%22%3B%0AgradeDiv.style.flexDirection%20%3D%20%22row%22%3B%0A%2F%2F%20%E0%B8%AA%E0%B8%A3%E0%B9%89%E0%B8%B2%E0%B8%87%20Div%20%E0%B8%A0%E0%B8%B2%E0%B8%A2%E0%B9%83%E0%B8%99%20gradeDiv%20%E0%B8%AD%E0%B8%B5%E0%B8%81%E0%B8%AD%E0%B8%B1%E0%B8%99%0Alet%20newGradeDiv%20%3D%20document.createElement(%22div%22)%3B%0AnewGradeDiv.style.padding%20%3D%20%2212px%22%3B%0Alet%20gradeH3%20%3D%20gradeDiv.querySelector(%22h3%22)%3B%0AnewGradeDiv.prepend(gradeH3)%3B%0AnewGradeDiv.append(document.querySelector(%22%5Bjscontroller%3DWPsbnb%5D%22))%3B%20%2F%2F%20Div%20%E0%B8%9A%E0%B8%AD%E0%B8%81%E0%B9%80%E0%B8%A7%E0%B8%A5%E0%B8%B2%E0%B8%AA%E0%B9%88%E0%B8%87%E0%B8%87%E0%B8%B2%E0%B8%99%0AgradeDiv.prepend(newGradeDiv)%3B%0AgradeDiv.querySelector(%22%5Bjscontroller%3DOlJr5b%5D%22).style.flexGrow%20%3D%201%3B%0A%2F%2F%20Append%20Div%20%E0%B9%81%E0%B8%AA%E0%B8%94%E0%B8%87%E0%B9%84%E0%B8%9F%E0%B8%A5%E0%B9%8C%E0%B8%97%E0%B8%B1%E0%B9%89%E0%B8%87%E0%B8%AB%E0%B8%A1%E0%B8%94%0AnewDiv.append(gradeDiv)%3B%0AnewDiv.append(document.querySelector(%22%5Bjsname%3DXkqTFd%5D%22))%3B%0Adocument.querySelector(%22%5Bjscontroller%3DWPsbnb%5D%22)%3B%0A%2F%2F%20%E0%B8%8B%E0%B9%88%E0%B8%AD%E0%B8%99%0Adocument.querySelector(%22%5Bjsname%3DB34EJ%5D%22).style.display%20%3D%20%22none%22%3B%0A%2F%2F%20Section%3A%20Keyboard%20Shortcut%0Alet%20hasBeenNavigated%20%3D%20false%3B%0Alet%20gradebox%20%3D%20document.querySelector(%22input%5Bjsname%3DYPqjbf%5D%22)%3B%0Alet%20windowOnBlur%20%3D%20(e)%20%3D%3E%20%7B%0A%20%20if%20(hasBeenNavigated)%20%7B%0A%20%20%20%20if%20(document.activeElement.tagName.toLowerCase()%20%3D%3D%3D%20%22iframe%22)%20%7B%0A%20%20%20%20%20%20%2F%2F%20Steal%20Focus%20Back%0A%20%20%20%20%20%20setTimeout(()%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20document.activeElement.blur()%3B%0A%20%20%20%20%20%20%20%20gradebox.focus()%3B%0A%20%20%20%20%20%20%7D%2C%201000)%3B%0A%0A%20%20%20%20%20%20hasBeenNavigated%20%3D%20false%3B%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D%3B%0Awindow.addEventListener(%22blur%22%2C%20windowOnBlur%2C%20true)%3B%0Aalert(%0A%20%20%22Google%20Classroom%20Keyboard%20Shortcut%5Cr%5Cn%E0%B8%81%E0%B8%94%20%3C%20%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B9%84%E0%B8%9B%E0%B8%A2%E0%B8%B1%E0%B8%87%E0%B8%84%E0%B8%99%E0%B8%81%E0%B9%88%E0%B8%AD%E0%B8%99%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2%20%5Cr%5Cn%E0%B8%81%E0%B8%94%20%3E%20%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%A2%E0%B8%B1%E0%B8%87%E0%B8%84%E0%B8%99%E0%B8%96%E0%B8%B1%E0%B8%94%E0%B9%84%E0%B8%9B%20%5Cr%5Cn%E0%B8%81%E0%B8%94%20X%20%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B9%82%E0%B8%9F%E0%B8%81%E0%B8%B1%E0%B8%AA%E0%B8%8A%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%84%E0%B8%B0%E0%B9%81%E0%B8%99%E0%B8%99%20%5Cr%5Cn%E0%B8%81%E0%B8%94%20Z%20%E0%B9%80%E0%B8%9E%E0%B8%B7%E0%B9%88%E0%B8%AD%E0%B8%A2%E0%B8%81%E0%B9%80%E0%B8%A5%E0%B8%B4%E0%B8%81%E0%B9%82%E0%B8%9F%E0%B8%81%E0%B8%B1%E0%B8%AA%E0%B8%8A%E0%B9%88%E0%B8%AD%E0%B8%87%E0%B9%83%E0%B8%AB%E0%B9%89%E0%B8%84%E0%B8%B0%E0%B9%81%E0%B8%99%E0%B8%99%22%0A)%3B%0A%0Adocument.onkeyup%20%3D%20(e)%20%3D%3E%20%7B%0A%20%20switch%20(e.which)%20%7B%0A%20%20%20%20case%2037%3A%20%2F%2F%20Left-Arrow%0A%20%20%20%20%20%20document.querySelector(%22div%5Bjsname%3Dm5pO5d%5D%22).click()%3B%0A%20%20%20%20%20%20hasBeenNavigated%20%3D%20true%3B%0A%20%20%20%20%20%20break%3B%0A%20%20%20%20case%2039%3A%20%2F%2F%20Right-Arrow%0A%20%20%20%20%20%20document.querySelector(%22div%5Bjsname%3DKwmAGc%5D%22).click()%3B%0A%20%20%20%20%20%20hasBeenNavigated%20%3D%20true%3B%0A%20%20%20%20%20%20break%3B%0A%20%20%20%20case%2088%3A%20%2F%2F%20X%20button%0A%20%20%20%20%20%20gradebox.focus()%3B%0A%20%20%20%20%20%20break%3B%0A%20%20%20%20case%2090%3A%20%2F%2F%20X%20button%0A%20%20%20%20%20%20gradebox.blur()%3B%0A%20%20%20%20%20%20break%3B%0A%20%20%7D%0A%7D%3B%7D)()%3B`;
+
+export const BookmarkButton = () => {
+  let createdBookmark = () => {
+    let bookmarkTitle = "เพิ่ม Keyboard Shortcut บน Google Classroom";
+    if (window.sidebar && window.sidebar.addPanel) {
+      // Mozilla Firefox Bookmark
+      window.sidebar.addPanel(bookmarkTitle, bookmarkUrl, "");
+    } else if (window.external && "AddFavorite" in window.external) {
+      // IE Favorite
+      window.external.AddFavorite(bookmarkUrl, bookmarkUrl);
+    } else {
+      // webkit - safari/chrome
+      alert(
+        "Webkit/Safari/Chrome ไม่สามารถใช้ Javascript ในการเพิ่ม Bookmarklet ได้ ให้ใช้ Link ที่อยุ่ด้านข้างแทน"
+      );
+    }
+  };
+  return <button onClick={createdBookmark}>ปุ่มนี้</button>;
+};
+
+# Bookmarklet
+
+สามารถกด <BookmarkButton></BookmarkButton> เพื่อเพิ่ม ฺBookmarklet ไปยัง Bookmarks ของ browser หรือลาก <a href={bookmarkUrl}>เพิ่ม Keyboard Shortcut บน Google Classroom</a>
+ไปยัง Bookmark Bar ได้
+
+# วิธีการใช้งาน
+
+ไปที่ Google Classroom ที่หน้าให้คะแนนตามรูป จากนั้นกดที่ Bookmarklet หน้าตาเว็บจะเปลี่ยนไปพร้อมกับมี Dialog ขึ้นงานใช้งาน
+
+```
+กด < เพื่อไปยังคนก่อนหน้า 
+กด > เพื่อยังคนถัดไป 
+กด X เพื่อโฟกัสช่องให้คะแนน 
+กด Z เพื่อยกเลิกโฟกัสช่องให้คะแนน
+```
+
+## ก่อนใช้ Bookmarklet
+<GatsbyImage image={props.images[1].childImageSharp.gatsbyImageData} alt="poster"/>
+
+## หลังใช้ Bookmarklet
+<GatsbyImage image={props.images[2].childImageSharp.gatsbyImageData} alt="poster"/>
+
+# Source Code
+
+```javascript
+// Section: Restyle
+let main = document.querySelector("main");
+// สร้่าง Div ขึ้นมาใหม่
+let newDiv = document.createElement("div");
+newDiv.id = "grid";
+newDiv.style.display = "flex";
+newDiv.style.flexDirection = "row";
+main.firstChild.after(newDiv);
+// ขยับช่องให้คะแนน และ เวลาส่งงานขึ้นมาด้านบน เพื่อให้สามารถหด Sidebar ได้
+let gradeDiv = document.querySelector("div[jsname=QjIALd]");
+gradeDiv.style.padding = 0;
+gradeDiv.style.flexGrow = 1;
+gradeDiv.style.flexShrink = 0;
+gradeDiv.style.flexBasis = "auto";
+gradeDiv.style.display = "flex";
+gradeDiv.style.flexDirection = "row";
+// สร้าง Div ภายใน gradeDiv อีกอัน
+let newGradeDiv = document.createElement("div");
+newGradeDiv.style.padding = "12px";
+let gradeH3 = gradeDiv.querySelector("h3");
+newGradeDiv.prepend(gradeH3);
+newGradeDiv.append(document.querySelector("[jscontroller=WPsbnb]")); // Div บอกเวลาส่งงาน
+gradeDiv.prepend(newGradeDiv);
+gradeDiv.querySelector("[jscontroller=OlJr5b]").style.flexGrow = 1;
+// Append Div แสดงไฟล์ทั้งหมด
+newDiv.append(gradeDiv);
+newDiv.append(document.querySelector("[jsname=XkqTFd]"));
+document.querySelector("[jscontroller=WPsbnb]");
+// ซ่อน
+document.querySelector("[jsname=B34EJ]").style.display = "none";
+// Section: Keyboard Shortcut
+let hasBeenNavigated = false;
+let gradebox = document.querySelector("input[jsname=YPqjbf]");
+let windowOnBlur = (e) => {
+  if (hasBeenNavigated) {
+    if (document.activeElement.tagName.toLowerCase() === "iframe") {
+      // Steal Focus Back
+      setTimeout(() => {
+        document.activeElement.blur();
+        gradebox.focus();
+      }, 1000);
+
+      hasBeenNavigated = false;
+    }
+  }
+};
+window.addEventListener("blur", windowOnBlur, true);
+alert(
+  "Google Classroom Keyboard Shortcut\r\nกด < เพื่อไปยังคนก่อนหน้า \r\nกด > เพื่อยังคนถัดไป \r\nกด X เพื่อโฟกัสช่องให้คะแนน \r\nกด Z เพื่อยกเลิกโฟกัสช่องให้คะแนน"
+);
+
+document.onkeyup = (e) => {
+  switch (e.which) {
+    case 37: // Left-Arrow
+      document.querySelector("div[jsname=m5pO5d]").click();
+      hasBeenNavigated = true;
+      break;
+    case 39: // Right-Arrow
+      document.querySelector("div[jsname=KwmAGc]").click();
+      hasBeenNavigated = true;
+      break;
+    case 88: // X button
+      gradebox.focus();
+      break;
+    case 90: // X button
+      gradebox.blur();
+      break;
+  }
+};
+```

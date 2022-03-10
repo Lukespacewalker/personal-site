@@ -1,0 +1,10 @@
+.icon {
+  @apply h-6 opacity-50 transition-all;
+  filter: grayscale(1);
+}
+
+.icon:hover,
+.icon:active {
+  @apply opacity-100;
+  filter: grayscale(0);
+}

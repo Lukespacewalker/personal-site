@@ -1,0 +1,403 @@
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+  type: "blog",
+  tag: "morphae-automation-part-1",
+  date: "2021-12-19 16:40",
+  title: "ตอนที่ 1: สร้างแอปด้วย Windows App SDK เพื่อการ Automate การบันทึกข้อมูล ATK ลงหมอ_ Station",
+  authors: ["myself"],
+  excerpt: "แกะโคดหน้าเว็บ หมอ_ Station เพื่อเตรียมการ Automate",
+  background: "selenium.png",
+  images:["login-page.jpg","list-page.jpg","pid-page.jpg","input-page.jpg"]
+};
+
+# สิ่งที่ต้องมี
+
+## เตรียม Project
+- ติดตั้ง Windows App SDK และ Visual Studio 2022 ซึ่งสามารถทำตามได้ จาก [Install tools for developing apps for Windows 10 and Windows 11](https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/set-up-your-development-environment?tabs=vs-2022)
+- สร้าง Blank Win UI 3.0 Desktop จาก Visual Studio 2022 (ไม่แนะนำ UWP เพราะไม่รองรับ .Net 6)
+- เพิ่ม Selenium.WebDriver 4.1+ package จาก Nuget
+- (ไม่จำเป็น) แนะนำให้ติดตั้ง Microsoft.Toolkit.Mvvm 7.1.2+ Microsoft.Extensions.DependencyInjection 6.0+ CommunityToolkit.WinUI.UI.Controls 7.1.2+ ด้วย
+
+## ดาวน์โหลด Driver สำหรับ Browser ที่ต้องการใช้งาน
+อย่างกรณีของ Microsoft Edge ให้โหลดจาก [Edge Web Driver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) จากนั้นนำไฟล์ msedgedriver.exe ที่ได้ใส่ไว้ใน Project Folder แล้วตั้ง Property ชื่อ **Copy to output directory** (คลิกขวาที่ไฟล์แล้วเลือก Propeties) เป็น Copy if newer
+
+## BrowserAutomationService
+
+### Interface IBrowserAutomationService
+เบื้องต้น BrowserAutomationService น่าจะมี Public methods ประมาณนี้
+
+```csharp
+public interface IBrowserAutomationService
+{
+    Task<bool> AddEntry(Entry entry, CancellationToken cancellationToken);
+    Task Login(string username, string password, CancellationToken cancellationToken);
+    void StartBrowser();
+    void StopBrowser();
+}
+```
+
+### เริ่มต้นและหยุด Browser
+เราจะเพิ่ม Method ที่ใช้ในการเริ่มและหยุด Browser ก่อน ตามด้านล่างนี้ โดย `delay` field นั้นมีไว้เพื่อ **Delay การควบคุมของ Selenium เพื่อให้ Browser มีเวลาแสดงผลหน้าเว็บก่อน**
+เพราะถ้าไม่รอให้ HTMLElement โหลดเสร็จก่อน การ query HTMLElement นั้น ก็จะไม่เจอ
+```csharp
+using OpenQA.Selenium.Edge;
+using OpenQA.Selenium;
+using System.Threading.Tasks;
+using System.Threading;
+using OpenQA.Selenium.Support.UI;
+using System;
+
+public class BrowserAutomationService : IBrowserAutomationService
+{
+    private const int delay = 1000 * 1;
+    private EdgeDriver edgeDriver;
+    public void StartBrowser()
+    {
+        if (edgeDriver is null)
+        {
+            edgeDriver = new edgeDriver(new EdgeOptions());
+        }
+    }
+    public void StopBrowser()
+    {
+        edgeDriver.Quit();
+        edgeDriver = null;
+    }
+}
+```
+
+### หน้า Login
+
+<GatsbyImage image={getImage(props.images[0])} alt="poster" />
+
+ลองดู HTML ของ Login ส่วนที่เป็นการกรอกฟอร์ม Login
+
+```html
+<form class="" data-bitwarden-watching="1">
+  <div class="form-group">
+    <div class="float-label float-label-lg">
+      <input id="username" name="username" placeholder="username" type="text" 
+        class="form-control form-control-lg" aria-invalid="false" value="" 
+        spellcheck="false" data-ms-editor="true">
+      <label for="username" class="">ชื่อผู้ใช้</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="float-label float-label-lg">
+      <input id="password" name="password" placeholder="password" type="password" 
+        class="form-control form-control-lg" aria-invalid="false" value="">
+      <label for="password" class="">รหัสผ่าน</label>
+    </div>
+  </div>
+  <div class="text-right">
+    <button type="submit" class="btn btn-label-primary btn-lg btn-widest">เข้าสู่ระบบ</button>
+  </div>
+</form>
+```
+
+จะเห็นว่า Username และ Password นั้นกรอกไป `<input name="username">` และ `<input name="password">` ตามลำดับ 
+และอยู่ภายใต้ Form Element อีกที ซึ่งแปลว่าเวลาเรา Trigger การ Submit (ไม่ว่ากด Enter เวลากำลังโฟกัส Input หรือกดปุ่ม) 
+ก็สามารถ Submit ได้ ดังนั้นสิ่งที่จะต้องทำคือ
+1. สั่งให้เปิดหน้า https://mohpromtstation.moph.go.th/login
+2. รอเพจโหลดเสร็จ
+3. หา `<input name="username">` และ `<input name="password">` แล้วกรอก username และ password
+4. Submit ฟอร์ม 
+5. แล้วรอการ Submit
+6. เปลี่ยนหน้าไปยัง https://mohpromtstation.moph.go.th/atk/record
+
+มันจะมีประเด็นตรงที่การรอ ที่เราจำเป็นต้องเขียน Code เพิ่มให้โปรแกรมรอจนกว่า Element นั้นจะปรากฎและสามารถ Query ได้ ซึ่งเราจะเขียน Extensions Method เพิ่มดังนี้
+```csharp
+public static class WebDriverExtension
+{
+    public static IWebElement WaitForElement(this IWebDriver driver, By by, CancellationToken cancellationToken = default)
+    {
+      var wait = new WebDriverWait(driver, new TimeSpan(0, 0, 30));
+      return wait.Until(driver =>
+      {
+          try
+          {
+              var result = driver.FindElement(by);
+              return result.Displayed ? result : null;
+          }
+          catch (NoSuchElementException)
+          {
+              return null;
+          }
+          catch (ElementNotVisibleException)
+          {
+              return null;
+          }
+      }, cancellationToken);
+    }
+}
+```
+`WaitForElement` เป็น Extension method ของ `IWebDriver` โดยการทำงานมันจะสร้าง `WebDriverWait` object เพื่อรอเป็นเวลาไม่เกิน 30 วินาที และไม่สนใจ `NoSuchElementException` 
+`ElementNotVisibleException` exceptions จากนั้นก็จะทำการรอจนว่า Element ซึ่งเราระบุผ่าน `by` argument จะปรากฎขึ้นมา โดยรอไม่เกิน Timespan ที่กำหนด
+
+จากนั้น เราจึงเริ่มสร้าง `Login` method ได้ตามด้านล่าง
+```csharp
+public class BrowserAutomationService : IBrowserAutomationService
+{
+  public async Task Login(string username, string password, CancellationToken cancellationToken)
+  {
+    cancellationToken.ThrowIfCancellationRequested();
+    edgeDriver.Navigate().GoToUrl("https://mohpromtstation.moph.go.th/login");
+
+    edgeDriver.WaitForElement(By.Name("username"), cancellationToken).SendKeys(username);
+    var passwordBox = edgeDriver.FindElement(By.Name("password"));
+    passwordBox.SendKeys(password);
+
+    cancellationToken.ThrowIfCancellationRequested();
+    passwordBox.Submit();
+    await Task.Delay(delay);
+
+    cancellationToken.ThrowIfCancellationRequested();
+    edgeDriver.Navigate().GoToUrl("https://mohpromtstation.moph.go.th/atk/record");
+  }
+}
+```
+
+เรามาดูขึ้นตอนการทำงานบางส่วนกัน
+- `cancellationToken.ThrowIfCancellationRequested();` ที่เห็นซ้ำอยู่หลายครั้ง นั้นมีไว้เพื่อให้สามารถ Cancel Method ที่กำลังรันอยู่ได้ (เราจะเรียกใช้ Method นี้จาก Non-UI Thread)
+- `edgeDriver.Navigate().GoToUrl("https://mohpromtstation.moph.go.th/login");` นั้นจะสั่งให้ Browser เปลี่ยนหน้าไปยัง https://mohpromtstation.moph.go.th/login
+- `await Task.Delay(delay);` มีไว้เพื่อรอให้ Browser มีเวลาได้แสดงผลก่อนที่จะทำคำสั่งต่อไป
+- `edgeDriver.WaitForElement(By.Name("username"), cancellationToken);` **ตัวเด็ด** อันนี้เอาไว้สำหรับหา HTMLElement ที่มี `name` attribute เท่ากับ "username" โดยจะ return ผลลัพธ์แรกหรือ throw `NoSuchElementException` หากไม่มี
+- `passwordBox.SendKeys(password)` Simulate การกรอก string ด้วย Keyboard
+- `passwordBox.Submit();` Submit ฟอร์ม (เหมือนการกดปุ่ม Enter เวลาโฟกัสที่ `<input>`)
+
+### หน้าบันทึกข้อมูล
+
+<GatsbyImage image={getImage(props.images[1])} alt="poster" />
+
+จะเห็นว่าก่อนจะเพิ่มข้อมูลได้ต้องกดปุ่มเพิ่มก่อน ลองมาดู HTML กัน จะเห็นว่าปุ่ม มันไม่มี id class หรือ attribute ที่จำเพาะเลย 
+
+```html
+<div class="portlet-addon">
+    <button class="btn btn-primary ml-2">เพิ่ม</button>
+    <button class="btn btn-success ml-2">เพิ่ม (ชาวต่างชาติ)</button>
+</div>
+```
+
+ดังนั้นเราจะใช้ XPath `"//button[contains(text(), 'เพิ่ม')]"` ในการค้นหาแทน
+
+```csharp
+edgeDriver.WaitForElement(By.XPath("//button[contains(text(), 'เพิ่ม')]"), cancellationToken).Click();
+```
+
+พอเรากดปุ่มเพิ่มแล้วก็จะมาสู่หน้านี้
+<div className="max-w-md mx-auto" >
+<GatsbyImage image={getImage(props.images[2])} alt="poster" />
+</div>
+
+ลองดู HTML ส่วนค้นหาชื่อก่อน 
+
+```html
+<form class="">
+    <div class="mt-2 form-group">
+        <div class="row">
+            <div class="col-10">
+                <div class="float-label float-label-lg">
+                  <input id="pid" name="pid" placeholder="1xxxxxxxxxxxx"
+                        autocomplete="off" pattern="^-?[0-9]" type="number" class="form-control" value="">
+                        <label for="pid" class="">เลขประจำตัวประชาชนผู้รับการตรวจ</label>
+                  </div>
+            </div>
+            <div class="col-2"><button type="submit" class="btn btn-info">ค้นหา</button></div>
+        </div>
+    </div>
+</form>
+```
+
+ตรงนี้ใช้หลักการเดียวกันด้านบน เหมือนหน้า Login เพียงแต่ตอนนี้เราจะเปลี่ยนมาใช้ CSS Selector แทน โดยการ Select `<input id="pid" />` 
+เราจะใช้ `"#pid"` ตามด้านล่าง
+
+```csharp
+var cidBox = edgeDriver.WaitForElement(By.CssSelector("#pid"), cancellationToken);
+cidBox.SendKeys(entry.CitizenId.ToString());
+
+cancellationToken.ThrowIfCancellationRequested();
+cidBox.Submit();
+```
+
+พอกดค้นหาแล้ว ก็จะมาที่หน้านี้
+
+<div className="max-w-md mx-auto" >
+<GatsbyImage image={getImage(props.images[3])} alt="poster" />
+</div>
+
+ลองดู HTML ส่วนที่เราสนใจ คือ ช่อง ชื่อ สาเหตุ และ ผลการตรวจ
+
+```html
+<form id="atkForm" class="">
+    <div class="form-group">
+        <div class="d-flex"><label for="" class="">ชื่อผลิตภัณฑ์</label>
+            <div class="ml-3">
+                <div class="form-check form-check-inline"><input name="testType" id="testType0" type="radio"
+                        class="form-check-input" value="0" checked=""><label for="testType0"
+                        class="form-check-label">Home Use</label></div>
+                <div class="form-check form-check-inline"><input name="testType" id="testType1" type="radio"
+                        class="form-check-input" value="1"><label for="testType1" class="form-check-label">Professional
+                        Use</label></div>
+            </div>
+        </div>
+        <div class=" css-2b097c-container"><span aria-live="polite" aria-atomic="false" aria-relevant="additions text"
+                class="css-7pg0cj-a11yText"></span>
+            <div class=" css-19htjap-control">
+                <div class=" css-1gc0yoq">
+                    <div class=" css-1uccc91-singleValue">STANDARD Q COVID-19 Ag Home Test [T 6400120] [SD Biosensor
+                        Inc., Korea.]</div>
+                    <div class="css-1fe4407">
+                        <div class="" style="display: inline-block;">
+                            <input autocapitalize="none" autocomplete="off"
+                                autocorrect="off" id="react-select-atktest-input" spellcheck="false" tabindex="0"
+                                type="text" aria-autocomplete="list" value=""
+                                style="box-sizing: content-box; width: 2px; background: 0px center; border: 0px; font-size: inherit; opacity: 0; outline: 0px; padding: 0px; color: inherit;">
+                            <div
+                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: 12px; font-family: Poppins, sans-serif; font-weight: 400; font-style: normal; letter-spacing: normal; text-transform: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" css-1p1cok9"><span class=" css-1hyfx7x"></span>
+                    <div class=" css-tlfecz-indicatorContainer" aria-hidden="true"><svg height="20" width="20"
+                            viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="css-8mmkcg">
+                            <path
+                                d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
+                            </path>
+                        </svg></div>
+                </div>
+            </div><input name="atktest" type="hidden" value="1">
+        </div>
+    </div>
+    <div class="form-group"><label for="atkcs" class="">สาเหตุการตรวจ</label>
+        <div class=" css-2b097c-container"><span aria-live="polite" aria-atomic="false" aria-relevant="additions text"
+                class="css-7pg0cj-a11yText"></span>
+            <div class=" css-19htjap-control">
+                <div class=" css-1gc0yoq">
+                    <div class=" css-1uccc91-singleValue">Active case finding / Contract tracing
+                        (ค้นหาผู้สัมผัสในครอบครัว/ ที่ทำงาน/ ชุมชน)</div>
+                    <div class="css-1fe4407">
+                        <div class="" style="display: inline-block;">
+                            <input autocapitalize="none" autocomplete="off"
+                                autocorrect="off" id="react-select-atkcs-input" spellcheck="false" tabindex="0"
+                                type="text" aria-autocomplete="list" value=""
+                                style="box-sizing: content-box; width: 2px; background: 0px center; border: 0px; font-size: inherit; opacity: 0; outline: 0px; padding: 0px; color: inherit;">
+                            <div
+                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: 12px; font-family: Poppins, sans-serif; font-weight: 400; font-style: normal; letter-spacing: normal; text-transform: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" css-1p1cok9"><span class=" css-1hyfx7x"></span>
+                    <div class=" css-tlfecz-indicatorContainer" aria-hidden="true"><svg height="20" width="20"
+                            viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="css-8mmkcg">
+                            <path
+                                d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
+                            </path>
+                        </svg></div>
+                </div>
+            </div><input name="atkcs" type="hidden" value="5">
+        </div>
+    </div>
+    <div class="form-group"><label for="atkrs" class="">ผลการตรวจ</label>
+        <div class=" css-2b097c-container"><span aria-live="polite" aria-atomic="false" aria-relevant="additions text"
+                class="css-7pg0cj-a11yText"></span>
+            <div class=" css-19htjap-control">
+                <div class=" css-1gc0yoq">
+                    <div class=" css-1uccc91-singleValue">ไม่พบ</div>
+                    <div class="css-1fe4407">
+                        <div class="" style="display: inline-block;">
+                            <input autocapitalize="none" autocomplete="off"
+                                autocorrect="off" id="react-select-atkrs-input" spellcheck="false" tabindex="0"
+                                type="text" aria-autocomplete="list" value=""
+                                style="box-sizing: content-box; width: 2px; background: 0px center; border: 0px; font-size: inherit; opacity: 1; outline: 0px; padding: 0px; color: inherit;">
+                            <div
+                                style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: 12px; font-family: Poppins, sans-serif; font-weight: 400; font-style: normal; letter-spacing: normal; text-transform: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" css-1p1cok9"><span class=" css-1hyfx7x"></span>
+                    <div class=" css-tlfecz-indicatorContainer" aria-hidden="true"><svg height="20" width="20"
+                            viewBox="0 0 20 20" aria-hidden="true" focusable="false" class="css-8mmkcg">
+                            <path
+                                d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z">
+                            </path>
+                        </svg></div>
+                </div>
+            </div><input name="atkrs" type="hidden" value="1">
+        </div>
+    </div>
+</form>
+```
+ตรงนี้จะซับซ้อนเล็กน้อย ตือ จริงๆ แล้ว ข้อมูลที่มัน Submit ไปจริงๆ คือจาก ชื่อ `<input name="atktest" type="hidden" value="1">` สาเหตุ `<input name="atkcs" type="hidden" value="5">` และ ผลการตรวจ `<input name="atkrs" type="hidden" value="1">`
+ส่วน input อื่นๆ ที่เห็นมีไว้เป็น Combo Box เท่านั้น (คือ HTML มี `<select />` ก็จริงและก็พิมพ์เลือกได้ แต่มันจะไม่มีช่องให้ดูสวยงามแบบนี้) ดังนั้น เป้าหมายของเราในการ Automate จะเป็นด้านล่างนี้แทน ทั้งนี้คือเพื่อให้คนที่เฝ้าดูการ Automate เห็นการเลือกค่าที่ถูกต้องด้สน
+- `<input id="react-select-atktest-input" />` เป็นช่องให้เราพิมพ์เลือกชื่อ ATK 
+- `<input id="react-select-atkcs-input" />` เป็นช่องให้เราพิมพ์เลือกสาเหตุตรวจ 
+- `<input id="react-select-atkrs-input" />` เป็นช่องให้เราพิมพ์เลือกผลตรวจ
+
+ซึ่งเราจะใช้ Css Selector ในการเลือกและกรอกข้อมูล เช่นเดียวกัน ตาม `AddEntry` method ที่สมบูรณ์ ตามด้านล่าง
+
+```csharp
+public class BrowserAutomationService : IBrowserAutomationService
+{
+  public async Task<bool> AddEntry(Entry entry, CancellationToken cancellationToken)
+  {
+      if (entry.Done) return true;
+
+      bool done = false;
+
+      edgeDriver.WaitForElement(By.XPath("//button[contains(text(), 'เพิ่ม')]"), cancellationToken).Click();
+
+      var cidBox = edgeDriver.WaitForElement(By.CssSelector("#pid"), cancellationToken);
+      cidBox.SendKeys(entry.CitizenId.ToString());
+
+      cancellationToken.ThrowIfCancellationRequested();
+      cidBox.Submit();
+
+      try
+      {
+          var atkTypeBox = edgeDriver.WaitForElement(By.CssSelector("#react-select-atktest-input"), cancellationToken);
+          atkTypeBox.SendKeys("GSD");
+          atkTypeBox.SendKeys(Keys.Tab);
+          var atkReasonBox = edgeDriver.FindElement(By.CssSelector("#react-select-atkcs-input"));
+          atkReasonBox.SendKeys("ให้ตรวจเพิ่มเติมตาม");
+          atkReasonBox.SendKeys(Keys.Tab);
+          var atkResultBox = edgeDriver.FindElement(By.CssSelector("#react-select-atkrs-input"));
+          switch (entry.Result)
+          {
+              case ATKResult.Detected:
+                  atkResultBox.SendKeys("พบ");
+                  atkResultBox.SendKeys(Keys.ArrowDown);
+                  atkResultBox.SendKeys(Keys.Tab);
+                  break;
+              case ATKResult.NotDetected:
+                  atkResultBox.SendKeys("ไม่พบ");
+                  atkResultBox.SendKeys(Keys.Tab);
+                  break;
+              case ATKResult.Indeterminate:
+                  break;
+          }
+
+          cancellationToken.ThrowIfCancellationRequested();
+          atkResultBox.Submit();
+
+          edgeDriver.WaitForElement(By.CssSelector(".swal2-confirm"), cancellationToken).Click(); // ปุ่ม ตกลง หลังแสดงว่าบันทึกสำเร็จ
+          await Task.Delay(delay);
+          edgeDriver.WaitForElement(By.XPath("//button[contains(text(), 'ปิด')]"), cancellationToken).Click();
+          done = true;
+      }
+      catch (Exception ex)
+      {
+          edgeDriver.Navigate().GoToUrl("https://mohpromtstation.moph.go.th/atk/record");
+          await Task.Delay(delay);
+      }
+
+      return done;
+  }
+}
+```
+
+# จบแล้ว ตอนที่ 1
+จริงๆ Code นี้ เรียกว่าเพียงพอในการ Automate แล้ว แต่มันยังไม่เป็น Application จริงๆ ตอนต่อไป เราจะมาดูการสร้าง Application ด้วย Windows App SDK 

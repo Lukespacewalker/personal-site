@@ -1,0 +1,77 @@
+header.app-header {
+    @apply relative z-10 flex items-center justify-between;
+
+    .logo {
+        @apply px-3;
+
+        & > img {
+            @apply h-12 w-auto sm:h-14;
+        }
+    }
+
+    .nav-container {
+        @apply absolute w-full z-50 opacity-0;
+        visibility: collapse;
+        top: 100%;
+        transition-property: opacity, visibility;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+        transition-delay: 0, 149ms;
+        
+        &.show {
+            @apply opacity-100;
+            visibility: visible;
+            transition-delay: 1ms, 0;
+        }
+
+        & > nav {
+            @apply flex flex-col gap-3 rounded-b-md py-6 px-3 bg-white rounded-md shadow-lg items-start;
+        }
+    }
+
+    nav a {
+        @apply px-3 py-2 rounded-md;
+    }
+
+    .nested-nav-container {
+        @apply relative flex flex-col z-50;
+
+        & > nav {
+            @apply flex flex-col items-start opacity-0;
+            max-height: 0;
+            visibility: collapse;
+            top: 100%;
+            transition-property: opacity, visibility, max-height;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+            transition-delay: 0ms, 149ms, 0ms;
+        }
+
+        & > nav.show {
+            @apply flex opacity-100;
+            max-height: 120px;
+            visibility: visible;
+            transition-delay: 1ms, 0ms, 1ms;
+        }
+    }
+
+    @screen lg {
+        .nav-container {
+            @apply relative w-auto justify-end flex-1 flex opacity-100;
+            visibility: visible;
+
+            & > nav {
+                @apply flex-row bg-transparent rounded-none shadow-none;
+                margin-top: 0;
+            }
+        }
+
+        .nested-nav-container {
+            & > nav {
+                @apply absolute bg-white rounded-md shadow-lg p-3;
+                min-width: 320px;
+                top: calc(100% + 0.5rem);
+            }
+        }
+    }
+}

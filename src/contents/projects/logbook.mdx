@@ -1,0 +1,35 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+	type: "project",
+	tag: "logbook",
+	date: "2019-11-30 14:16",authors: ["myself"],
+	title: "Electronic Logbook",
+	excerpt: "ระบบ Electronic Logbook สำหรับ OcMed Resident",
+	background: "logbook_interface.jpg",
+	images: ["logbook_interface.jpg","logbook.jpg"]
+}
+
+# ที่มา
+
+ต้องการปรับปรุง Logbook กระดาษให้เป็นระบบที่ดีมากขึ้น
+
+# Technology stack ที่ใช้
+## Front End
+
+- Universal Windows Platform (Windows 10+ Only)
+
+## Back End
+
+- Asp.Net Core (.NET 3.1)
+- PostgreSQL โดยสร้างฐานข้อมูลแบบ Code-First โดยใช้ Entity Framework Core
+
+## สถานะปัจจุบัน
+
+**ยกเลิกการใช้งานแล้ว** เนื่องจากต้องพัฒนาให้สอดคล้องกับ WFME
+[e-logbook.azurewebsites.net](https://e-logbook.azurewebsites.net/)
+
+# Screenshot
+
+<GatsbyImage image={props.images[1].childImageSharp.gatsbyImageData} alt="poster" />
+

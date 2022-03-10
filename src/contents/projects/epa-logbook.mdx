@@ -1,0 +1,33 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+	type: "project",
+	tag: "new- logbook",
+	date: "2021-05-07 14:16",authors: ["myself"],
+	title: "Electronic Logbook",
+	excerpt: "ระบบ Electronic Logbook สำหรับ OcMed Resident",
+	background: "new-logbook.jpg",
+	images: ["new-logbook.jpg","new-logbook_interface.jpg"]
+}
+
+# ที่มา
+
+มีความจำเป็นต้องพัฒนาระบบ Logbook ให้สอดคล้องกับ WFME 
+
+# Technology stack ที่ใช้
+## Front End
+
+- Blazor Webassembly 
+
+## Back End
+
+- Asp.Net Core (.NET 5)
+- PostgreSQL โดยสร้างฐานข้อมูลแบบ Code-First โดยใช้ Entity Framework Core
+
+# สถานะปัจจุบัน
+
+สามารถเข้าดูได้ที่ [logbookoccmed.md.chula.ac.th](https://logbookoccmed.md.chula.ac.th/) แต่ตอนนี้อาจจะไม่ได้ใช้งานแล้ว เพราะแล้วแต่ละสถานบันไปตกลงกันเองแทน
+
+# Screenshot
+
+<GatsbyImage image={props.images[1].childImageSharp.gatsbyImageData} alt="poster" />

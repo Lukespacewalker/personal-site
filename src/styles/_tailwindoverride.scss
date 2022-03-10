@@ -1,0 +1,90 @@
+@layer base{
+  body {
+    @apply text-gray-900 overflow-x-clip;
+    background: #fefaf6;
+    font-family: "Sarabun", sans-serif;
+  }
+  
+  ul {
+    @apply list-disc ml-12;
+  }
+
+  ol {
+    @apply list-decimal ml-12;
+  }
+
+  code{
+    @apply text-white rounded-md p-2;
+    background:rgba(0,0,0,0.9);
+  }
+}
+
+@layer components {
+  .top-container{
+    @apply px-3 max-w-7xl mx-auto;
+  }
+  .container {
+    @apply px-3 max-w-7xl mx-auto;
+    animation: container-fade-in;
+    animation-duration: 600ms;
+    animation-fill-mode: forward;
+  }
+
+  .tagline {
+    @apply text-white rounded inline-block py-1 px-2 text-sm;
+    background: linear-gradient(to right, #642b73, #c6426e);
+  }
+}
+
+@layer utilities {
+  .max-w-8xl {
+    max-width: 90rem;
+  }
+
+  .mdx-contain-image{
+    max-height: 50rem;
+    img{
+      @apply rounded-md sm:rounded-xl shadow-xl overflow-hidden my-6;
+      object-fit: contain!important;
+    }
+  }
+
+  .h-128 {
+    height: calc(128 * 0.25rem);
+  }
+
+  .w-128 {
+    width: calc(128 * 0.25rem);
+  }
+
+  .max-h-128 {
+    max-height: calc(128 * 0.25rem);
+  }
+
+  .max-w-128 {
+    max-width: calc(128 * 0.25rem);
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, #642b73, #c6426e);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .text-color-primary {
+    color: rgb(var(--color-primary));
+  }
+  .bg-gradient {
+    background: linear-gradient(to right, #642b73, #c6426e);
+  }
+}
+
+@keyframes container-fade-in{
+  0%{
+    opacity: 0;
+  }
+
+  100%{
+    opacity: 1;
+  }
+}

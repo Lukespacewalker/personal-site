@@ -1,0 +1,27 @@
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+  type: "blog",
+  tag: "blender-transparent",
+  date: "2021-07-27 22:09",
+  title: "ฟีเจอร์ของ Windows 11",
+  authors: ["myself"],
+  excerpt: "ฟีเจอร์ใหม่ๆ ที่น่าสนใจของ Windows 11"
+};
+
+# Prerequistics
+์- Node Wrangler เปิดใช้งานที่ Add-ons
+
+# การทำ 3D กราฟฟิกใน Blender 3.0 ที่มีพื้นหลังโปร่งแสงเพื่อที่จะสามารถนำมาวางซ้อนกับพื้นหลังของหน้าเว็บ
+
+วันนี้ผมจะมาแนะนำวิธีการ เออทำโลโก้หรือกราฟฟิกสามมิติในโปรแกรม Blender 3.0 เพื่อที่จะได้มีพื้นหลังโปรงแสงที่สามารถนำมาวางซ้อนบนกราฟฟิกบนเว็บไซต์ได้ 
+
+ออกแบบกราฟฟิกคุณให้มีวัตถุที่คุณต้องการและมีพื้นราบข้างล่างที่ใช้ Shaders Node ดังรูป โดยจะเป็นการผสมกันระหว่าง Principle BSDF กับ Transparent Shader (มีข้อจำกัดคือหนาวที่เกิดขึ้นจาก Mesh light นั้นไม่สามารถที่จะบันทึกลงไปบนกระจกที่โปร่งใสได้)
+
+จากนั้นตั้งที่ World Setting ที่หัวข้อ Film เลือก Transparent Glass
+
+# Composition
+
+ดูเหมือนว่า
+
+ไปยัง Composition แล้วคลิก Use Node 

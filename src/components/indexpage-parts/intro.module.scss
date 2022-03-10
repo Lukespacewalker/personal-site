@@ -1,0 +1,42 @@
+.intro {
+  @apply relative grid gap-12 items-center justify-items-center justify-center;
+  min-height: 80vh;
+  grid-template-areas: "image" "text";
+}
+.intro-text {
+  @apply text-center flex flex-col gap-3;
+  grid-area: text;
+}
+
+.intro-image {
+  @apply relative;
+  grid-area: image;
+}
+
+.intro-svg {
+  width: 125%;
+  height: 125%;
+  transform: translate(-10%, -8%);
+}
+
+.icon {
+  @apply h-8 opacity-50 transition-all;
+  filter: grayscale(1);
+}
+
+.icon:hover,
+.icon:active {
+  @apply opacity-100;
+  filter: grayscale(0);
+}
+@screen xl {
+  .intro {
+    grid-template-areas: "text image";
+  }
+
+  .intro-svg {
+    width: 135%;
+    height: 135%;
+    transform: translate(-12%, -12%);
+  }
+}

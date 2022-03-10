@@ -1,0 +1,42 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+	type: "blog",
+	tag: "ithesis",
+	date: "2019-12-16 10:24",
+	title: "ปัญหา IThesis",
+	authors: ["myself"],
+	excerpt: "แก้ปัญหา IThesis ค้างที่ 70% และเมนูไม่ขึ้นใน Word",
+	background: "problem.jpg",
+	images: ["problem.jpg","word_disable.png","word_addins.png","word_com_dialog.png","word_disable_dialog.png"]
+}
+
+# ปัญหาค้างที่ 70%
+
+๊Update Endnote เป็นรุ่นล่าสุดคือ Endnote X 9.2 
+
+# ปัญหา Add-Ins หายไปจาก Toolbars ใน Word
+
+ลองตรวจสอบก่อนว่า Add-Ins ถูกปิดไว้หรือไม่ที่ Word โดยเข้าไปที่ File > Option
+
+<GatsbyImage image={props.images[2].childImageSharp.gatsbyImageData} alt="poster"/>
+
+จากนั้นเลือก Add-Ins และเลือก COM Add-Ins แล้วกด Go
+
+<GatsbyImage image={props.images[3].childImageSharp.gatsbyImageData} alt="poster"/>
+
+ดูว่า Add-Ins นั้นมีเครื่องหมายถูกหรือไม่ถ้าไม่มี ให้ติกถูก แล้วกด Ok 
+
+หากทำแล้ว Add-Ins นั้นยังไม่ปรากฎแปลว่ามันอาจะถูกปิดไว้เพราะมันเคยมีปัญหากับ Word ให้กลับไปที่ Options อีกครั้งแต่ครั้งนี้เลือก Disables Items แทน
+
+<GatsbyImage image={props.images[1].childImageSharp.gatsbyImageData} alt="poster"/>
+
+ให้ Enable สิ่งที่ต้องการแล้ว Restart Word ดู
+
+<GatsbyImage image={props.images[4].childImageSharp.gatsbyImageData} alt="poster"/>
+
+หากยังไม่มาลองไปดูใน Registry โดยเข้า WIN + R แล้วพิมพ์ regedit แล้วเปิด Registry Editor แล้วไปที่ Key (ซึ่งอาจจะไม่มีก็ได้)
+
+```
+HKEY_CURRENT_USER\Software\Microsoft\Office\รุ่นเป็นต้วเลข.0\Word\Resiliency\DisabledItems
+```

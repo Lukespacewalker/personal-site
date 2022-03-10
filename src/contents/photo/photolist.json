@@ -1,0 +1,26 @@
+[
+  {
+    "description": "Osaka-jo, Osaka",
+    "file": "Osaka.jpg"
+  },
+  {
+    "description": "Dotonbori, Osaka",
+    "file": "Dontonbori.jpg"
+  },
+  {
+    "description": "Parrot",
+    "file": "Parrot.jpg"
+  },
+  {
+    "description": "Jigokudani, Noboribetsu",
+    "file": "Jinko.jpg"
+  },
+  {
+    "description": "Hokkaido Museum, Sapporo",
+    "file": "Hokaido.jpg"
+  },
+  {
+    "description": "A View from Sapporo TV tower, Sapporo",
+    "file": "Sapporo.jpg"
+  }
+]

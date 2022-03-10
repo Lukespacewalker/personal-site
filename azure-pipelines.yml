@@ -1,0 +1,50 @@
+# Node.js
+# Build a general Node.js project with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-2019'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '16.x'
+  displayName: 'Install Node.js'
+
+- script: chcp
+  displayName: 'Show current codepage'
+
+- script: chcp 65001
+  displayName: 'Change codepage to Unicode (UTF-8 without BOM)'
+
+- script: git config user.email "suttisak.lukesp@outlook.com"
+  displayName: 'Set git'
+
+- script: git config user.name "Suttisak Denduangchai"
+  displayName: 'Set git'
+
+- script: npm install -g pnpm
+  displayName: 'Restore packages'
+  
+- script: pnpm install
+  displayName: 'Restore packages'
+
+- script: npm run deploy
+  displayName: 'Build website then Deploy to GitHubPage'
+
+#- task: CopyFiles@2
+#  displayName: 'Copy to ArtifactStagingDirectory'
+#  inputs:
+#    SourceFolder: './public'
+#    Contents: '**'
+#    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+#- task: PublishBuildArtifacts@1
+#  displayName: 'Publish Build Artifacts'
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'drop'

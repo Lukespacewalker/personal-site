@@ -1,0 +1,414 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+	type: "blog",
+	tag: "stata",
+	date: "2019-12-03 19:16",
+	title: "พื้นฐาน STATA ตอนที่ 2",
+	authors: ["myself"],
+	excerpt: "วิธีการใช้โปรแกรม STATA/MP 16.0 พื้นฐาน โดยเป็นเนื้อหาเทอมปลายของวิชา Data Analysis",
+       background:"basic.jpg",
+	images: ["basic.jpg","correlation.jpg"]
+}
+
+เนื้อหาในบทความนี้เป็นการรวบรวมคำสั่งที่ควรรุ้ และมีการสอนในวิชา Data Analysis ของเทอมปลาย
+เรื่อง Analysis of variance, Non-parametric statistic, Correlation, Regression
+
+<div className="emphasize">
+
+# คำสั่ง Help
+สำคัญมากแนะให้พยายามจำชื่อ คำสั่ง ที่ใช้บ่อยได้ เพราะจะได้ใช้ดูคู่มือได้ง่าย เช่น ```help cc``` ก็จะดูได้ว่าคำสั่ง Case control study อยุ่เมนุไหน และทำอะไรได้บ้าง
+
+</div>
+
+# One-way Analysis of Variance (ANOVA)
+$$
+H_O : \mu_1 = \mu_2 = \mu_3 = .... \mu_n
+$$
+$$
+H_A : \mu_i \not = \mu_j  \space at \space least \space 1 \space pair \space and \space i \not = j
+$$
+เป็นการทดสอบว่า $mu$ แตกต่างกันอย่างน้อย 1 กลุ่มหรือไม่ โดยมี Assumtion ว่า Independence Sample, Homogeniety of variance, Normality
+ซึ่งก็คล้ายกับ Independent samples T-Test ที่นี้ก็ต้องดู Normality ก่อนโดยใช้
+```stata-out
+. histogram var1 , normal
+. graph box var1
+```
+หากกระจายเป็นปกติแล้ว จึงทำการทดสอบ และให้ทำ pairwise comparison ให้ด้วยเลย ซึ่งใช้ ```bonferroni``` ```scheffe``` ```sidak``` ก็ได้ แต่จะไม่ได้ 95% Confidence interval
+```stata-out
+. oneway hsCRP edu, scheffe
+
+                        Analysis of Variance
+    Source              SS         df      MS            F     Prob > F
+------------------------------------------------------------------------
+Between groups      118.206792      3   39.4022639      8.71     0.0000
+ Within groups      20346.8524   4496   4.52554546
+------------------------------------------------------------------------
+    Total           20465.0592   4499   4.54880177
+
+Bartlett's test for equal variances:  chi2(3) =   7.7554  Prob>chi2 = 0.051
+
+                          Comparison of hsCRP by edu
+                                  (Scheffe)
+Row Mean-|
+Col Mean |   < bachel   bachelor   master’s
+---------+---------------------------------
+bachelor |      -0.30
+         |      0.003
+         |
+master’s |      -0.30       0.01
+         |      0.024      1.000
+         |
+Ph.D.de  |      -0.44      -0.14      -0.14
+         |      0.000      0.497      0.562
+
+```
+ให้ดูที่ Bartlett'test ก่อนถ้ามัน Significant แปลว่า Variance มันไม่เท่ากัน จะต้องไปใช้ Welch test (Robust test for equality of mean) แต่ถ้าไม่ Significant ก็ใช้ ANOVA ต่อได้
+$$
+H_O : \sigma_1 = \sigma_2 = \sigma_3 = .... \sigma_n
+$$
+$$
+H_A : \sigma_i \not = \sigma_j \space at \space least \space 1 \space pair \space and \space i \not = j
+$$
+ที่ก็ดู Pairwise Comparison ว่าคู่ไหนที่ต่างกัน โดยดู แถวล่างที่เป็น p-value ดูเฉพาะคู่ที่ Significant อย่างในนี้ก็คือคู่ 
+1. bachelor vs. bachelor
+2. bachelor vs. master
+3. bachelor vs. Ph.D.
+และคู่ที่ต่างมากสุดคือ bachelor vs. Ph.D.
+
+ที่นี้ถ้าอยากจะได้ 95% CI ด้วยก็ต้องใช้
+
+## Pairwise Comparison of Mean
+```stata-out
+. pwmean hsCRP, over(edu) mcompare(scheffe) effects
+
+Pairwise comparisons of means with equal variances
+
+over         : edu
+
+---------------------------
+             |    Number of
+             |  Comparisons
+-------------+-------------
+         edu |            6
+---------------------------
+
+-----------------------------------------------------------------------------------------------------------
+                                          |                             Scheffe              Scheffe
+                                    hsCRP |   Contrast   Std. Err.      t    P>|t|     [95% Conf. Interval]
+------------------------------------------+----------------------------------------------------------------
+                                      edu |
+bachelor’s degree vs < bachelor’s degree  |   -.304477   .0822795    -3.70   0.003    -.5345751   -.0743789
+  master’s degree vs < bachelor’s degree  |    -.29528   .0961818    -3.07   0.024    -.5642567   -.0263034
+     Ph.D. degree vs < bachelor’s degree  |     -.4395   .0908987    -4.84   0.000     -.693702   -.1852979
+    master’s degree vs bachelor’s degree  |    .009197   .0929421     0.10   1.000    -.2507197    .2691136
+       Ph.D. degree vs bachelor’s degree  |   -.135023   .0874635    -1.54   0.497    -.3796184    .1095724
+         Ph.D. degree vs master’s degree  |  -.1442199   .1006524    -1.43   0.562    -.4256986    .1372587
+-----------------------------------------------------------------------------------------------------------
+```
+ก็จะได้ผลลัพธ์ เช่นเดียวกัน
+
+# Correlation
+ทดสอบความสัมพันธ์เชิงส้นตรง ระหว่าง Continuous กับ Continuous 
+## Pearson Correlation
+ไม่ได้มี Assumtion เรื่อง Normality ของข้อมูล หากต้องการดูความสัมพันธ์เชิงเส้นตรง ระหว่าง hsCRP age uric acid พร้อมทดสอบความสัมพันธ์ใช้
+```stata-out
+. pwcorr hsCRP age u_acid , sig
+
+             |    hsCRP      age   u_acid
+-------------+---------------------------
+       hsCRP |   1.0000 
+             |
+             |
+         age |   0.1894   1.0000 
+             |   0.0000
+             |
+      u_acid |   0.1241   0.0143   1.0000 
+             |   0.0000   0.3381
+
+```
+คู่ไหนที่มี Significant (age hsCRP, u_acid hsCRP) ก็คือมีความสัมพันธ์เชิงเส้นตรง ส่วนขนาดความสัมพันธ์ ดูที่ r ที่อยู่แถวบน โดยมีค่า -1 ถึง 1
+ซึ่งการที่ มันไม่ Significant แปลว่าอาจจะไม่มีความสัมพันธ์กัน หรือ มีความสัมพันธ์ในรูปแบบอื่น
+<GatsbyImage image={props.images[1].childImageSharp.gatsbyImageData} alt="poster" style={{maxHeight:`600px`}} imgStyle={{objectFit:`contain`}}/>
+
+# Regression
+## คำถามการวิจัย
+Casual Research Question จะมี X ที่ชัดเจน +- Confounders ไปยัง Y 1 ตัว แบบนี้จะใช้ Regression แบบ Explantory Model
+โดยเราจะใส่ตัวแปรที่เกี่ยวทั้งหมด (Enter) เพื่อจะได้ควบคุม Confounders ตัวอื่นๆ และเราสนใจค่า Coefficent หรือ Odds Ratio ของตัวแปรที่เราสนใจเท่านั้น ตัวสมการที่ได้เราไม่ได้ใช้
+
+Descriptive Research Question จะมี X ที่ไม่ชัดเจน ไปยัง Y 1 ตัว โดยมี 2 แบบคือ
+1. Exploratory Model คือเราอยากรู้ว่า X ตัวไหนบ้างที่มีผลต่อ Y ซึ่งเราจะใช้แบบ Enter หรือ Stepwise ก็ได้ โดยแบบ Enter เราจะเอาเฉพาะตัวแปรที่มัน Significant ว่าเป็นตัวแปรที่มีผลต่อ Y ส่วน Stepwise
+มันจะเหลือเฉพาะตัวแปรที่ Significant อยู่แล้ว
+2. Prediction Model คืออยากรู้ว่าจะใช้ X ทำนาย Y ได้ไง ตัวนี้แหล่ะที่เราอยากได้ สมการ โดยเราจะใช้แบบ Stepwise เพื่อหาเฉพาะ X ที่มัน Significant
+
+## Multiple Logistic Regression
+ตัวแปรตามเป็น Nominal ตัวแปรต้นเป็นอะไรก็ได้
+จะมีสมการดังนี้ (Log เป็น Natural log (ฐาน e) ไม่ใช่ ฐาน 10)
+$$
+Log_e (Odd of Outcome=1) = a + b_1x_1 + b_2x_2 + b_3x_3
+$$
+$$
+Logit (Outcome=1) = a + b_1x_1 + b_2x_2 + b_3x_3
+$$
+โดยถ้าต้องการ Odds Ratio ของ x1 x2 x3 ให้ใช้
+```
+logistic y x1 x2 x3
+```
+แต่ถ้าต้องการ Coefficient ของ x1 x2 x3 ให้ใช้
+```
+logistic y x1 x2 x3 , coef
+หรือ
+logit y x1 x2 x3
+```
+เช่น ทดสอบความสันพันธ์ระหว่าง Periodontal Status ของมารดา กับการเกิด Low birth weight เมื่อควบคุม age smoke
+เนื่องจาก Periodontal status เป็น  Mild Moderate Severe (ซึ่งมากกว่า 2 กลุ่ม) ต้องทำ Indicator Variables โดยเพิ่ม ```i.``` เช่น 
+```stata-out
+. logistic lbw i.perio smoke age
+
+Logistic regression                             Number of obs     =        300
+                                                LR chi2(4)        =      28.07
+                                                Prob > chi2       =     0.0000
+Log likelihood = -193.90917                     Pseudo R2         =     0.0675
+
+------------------------------------------------------------------------------
+         lbw | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       perio |
+     severe  |   2.185094   .7797869     2.19   0.028     1.085688      4.3978
+   moderate  |   3.516621   1.099473     4.02   0.000     1.905449    6.490139
+             |
+       smoke |   2.866168   .8158689     3.70   0.000     1.640601    5.007263
+         age |    .961762   .0238681    -1.57   0.116     .9161008    1.009699
+       _cons |   .8649961   .5607009    -0.22   0.823     .2428035    3.081579
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+
+```
+จะได้ว่า 
+1. มารดาที่มีโรคปริทันต์ระดับปานกลางมีแต้มต่อการเกิดทารกน้ำหนักตัวน้อยเป็น 3.52 เท่า เมื่อเทียบกับมารดาที่มีความรุนแรงโรคระดับต่ำ อย่างมีนัยสำคัญทางสถิติ (95% 1.91 - 6.49)
+1. มารดาที่มีโรคปริทันต์ระดับรุนแรงมีแต้มต่อการเกิดทารกน้ำหนักตัวน้อยเป็น 2.19 เท่า เมื่อเทียบกับมารดาที่มีความรุนแรงโรคระดับต่ำ อย่างมีนัยสำคัญทางสถิติ (95% 1.09 - 4.40)
+เมื่อควบคมตัวแปร smoke และ age แล้ว
+
+แต่ ลองเปลี่ยนคำถาม เป็น ปัจจัยใดบ้างที่มีผลต่อการเกิด Low birth weight โดยการใช้ Stepwise
+pe(.05) คือ p-value ที่จะเข้า Model
+pr(.1) คือ p-value ที่จะออก Model
+```stata-out
+. xi: stepwise, pe(.05) pr(.1) : logistic lbw i.perio smoke age wt_lmp ptl hyper urirr pvft
+i.perio           _Iperio_0-2         (naturally coded; _Iperio_0 omitted)
+                      begin with full model
+p = 0.7634 >= 0.1000  removing pvft
+p = 0.1849 >= 0.1000  removing age
+
+Logistic regression                             Number of obs     =        300
+                                                LR chi2(7)        =      61.83
+                                                Prob > chi2       =     0.0000
+Log likelihood = -177.02834                     Pseudo R2         =     0.1487
+
+------------------------------------------------------------------------------
+         lbw | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   _Iperio_1 |    2.65682   1.001204     2.59   0.010     1.269383    5.560725
+   _Iperio_2 |   2.700088    .909403     2.95   0.003     1.395369    5.224766
+       smoke |    2.32919   .7163951     2.75   0.006     1.274672    4.256094
+       urirr |   2.701663   .9511301     2.82   0.005     1.355073    5.386414
+      wt_lmp |   .9674224     .01072    -2.99   0.003     .9466381     .988663
+         ptl |   1.847696   .5365628     2.11   0.035     1.045792    3.264493
+       hyper |   7.167744   4.126536     3.42   0.001     2.319199    22.15272
+       _cons |   1.793313   1.278627     0.82   0.413     .4433553    7.253714
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+```
+จะได้ว่า ปัจจัย perio (Moderate , Severe) , smoke , urirr. wt_lmp . ptl , hyper มีคามสัมพนธ์กับการเกิด LBW
+หรือ ถ้าจะ Predict Odds การเกิด LBW ด้วย Parameter ต่างๆ ก็สามารถเขียน สมการได้ว่า
+```stata-out
+. xi: stepwise, pe(.05) pr(.1) : logistic lbw i.perio smoke age wt_lmp ptl hyper urirr pvft, coef
+i.perio           _Iperio_0-2         (naturally coded; _Iperio_0 omitted)
+                      begin with full model
+p = 0.7634 >= 0.1000  removing pvft
+p = 0.1849 >= 0.1000  removing age
+
+Logistic regression                             Number of obs     =        300
+                                                LR chi2(7)        =      61.83
+                                                Prob > chi2       =     0.0000
+Log likelihood = -177.02834                     Pseudo R2         =     0.1487
+
+------------------------------------------------------------------------------
+         lbw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+   _Iperio_1 |   .9771298    .376843     2.59   0.010      .238531    1.715728
+   _Iperio_2 |   .9932845   .3368049     2.95   0.003     .3331589     1.65341
+       smoke |   .8455204   .3075727     2.75   0.006      .242689    1.448352
+       urirr |   .9938676   .3520535     2.82   0.005     .3038553     1.68388
+      wt_lmp |    -.03312    .011081    -2.99   0.003    -.0548384   -.0114017
+         ptl |   .6139397   .2903955     2.11   0.035     .0447749    1.183105
+       hyper |   1.969591   .5757091     3.42   0.001     .8412219     3.09796
+       _cons |   .5840649   .7129971     0.82   0.413    -.8133838    1.981514
+------------------------------------------------------------------------------
+```
+$$
+Logit (Low \space Birth \space Weight) = .5840649 + .9771298(Severe_Perio) + .9932845(Moderate_Perio) 
+$$
+$$
++ .8455204(smoke) + .9938676(urirr) -.03312(wt_lmp) + .6139397(ptl) + 1.969591(hyper)
+$$
+
+ทีนี้ลองใช้ Enter
+```stata-out
+. logistic lbw i.perio smoke age wt_lmp ptl hyper urirr pvft
+
+Logistic regression                             Number of obs     =        300
+                                                LR chi2(9)        =      63.70
+                                                Prob > chi2       =     0.0000
+Log likelihood = -176.09487                     Pseudo R2         =     0.1532
+
+------------------------------------------------------------------------------
+         lbw | Odds Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       perio |
+     severe  |   2.449564   .9302324     2.36   0.018       1.1637    5.156276
+   moderate  |   2.521997   .8671047     2.69   0.007     1.285545    4.947683
+             |
+       smoke |   2.278006   .7070087     2.65   0.008     1.239862    4.185394
+         age |   .9655763     .02618    -1.29   0.196      .915604    1.018276
+      wt_lmp |   .9696892    .010993    -2.72   0.007      .948381    .9914761
+         ptl |    1.95181   .5791706     2.25   0.024     1.091079    3.491555
+       hyper |   6.990431   4.019644     3.38   0.001     2.264881    21.57559
+       urirr |   2.642055   .9390483     2.73   0.006     1.316452    5.302478
+        pvft |   .9620914   .1235165    -0.30   0.763     .7480597    1.237361
+       _cons |   3.766512   3.426184     1.46   0.145      .633358    22.39904
+------------------------------------------------------------------------------
+Note: _cons estimates baseline odds.
+```
+จะพบว่าตัวแปรที่ Significant ก็เหมือนกันกับแบบ Stepwise
+
+# Multiple Linear Regression
+ตัวแปรตามเป็น Ratio ตัวแปรต้นเป็นอะไรก็ได้
+$$
+y = a + b_1x_1 + b_2x_2 + b_3x_3
+$$
+โดยถ้าต้องการ Coefficent ก็
+```
+regress y x1 x2 x3
+```
+แต่ถ้าต้องการ Standardized Coefficent ก็เพิ่ม ```,beta```
+```
+regress y x1 x2 x3 , beta
+```
+เช่น
+```stata-out
+. regress hsCRP i.PA_level
+
+      Source |       SS           df       MS      Number of obs   =     4,500
+-------------+----------------------------------   F(2, 4497)      =     47.23
+       Model |  421.038286         2  210.519143   Prob > F        =    0.0000
+    Residual |  20044.0209     4,497  4.45719833   R-squared       =    0.0206
+-------------+----------------------------------   Adj R-squared   =    0.0201
+       Total |  20465.0592     4,499  4.54880177   Root MSE        =    2.1112
+
+------------------------------------------------------------------------------
+       hsCRP |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    PA_level |
+   Moderate  |   .1889763   .0724464     2.61   0.009     .0469458    .3310067
+       High  |  -.6540248   .0826992    -7.91   0.000    -.8161558   -.4918938
+             |
+       _cons |    1.99966   .0452379    44.20   0.000     1.910972    2.088349
+------------------------------------------------------------------------------
+ถ้าอยากจะดู Standardized Coefficient ก็ทำได้
+. regress hsCRP i.PA_level,beta
+
+      Source |       SS           df       MS      Number of obs   =     4,500
+-------------+----------------------------------   F(2, 4497)      =     47.23
+       Model |  421.038286         2  210.519143   Prob > F        =    0.0000
+    Residual |  20044.0209     4,497  4.45719833   R-squared       =    0.0206
+-------------+----------------------------------   Adj R-squared   =    0.0201
+       Total |  20465.0592     4,499  4.54880177   Root MSE        =    2.1112
+
+------------------------------------------------------------------------------
+       hsCRP |      Coef.   Std. Err.      t    P>|t|                     Beta
+-------------+----------------------------------------------------------------
+    PA_level |
+   Moderate  |   .1889763   .0724464     2.61   0.009                 .0409595
+       High  |  -.6540248   .0826992    -7.91   0.000                -.1241815
+             |
+       _cons |    1.99966   .0452379    44.20   0.000                        .
+------------------------------------------------------------------------------
+```
+เราก็จะเห็นว่า ระดับ hsCRP มีความสัมพันธ์กับระดับการมีกิจกรรมทางกาย
+
+# Non parametric
+## Wilcoxon rank-sum test 
+ทดสอบแบบ Independent samples t-test แต่เป็น Non parametric เช่นทดสอบว่า hsCRP สัมพันธ์กับเพศไหม
+```stata-out
+ranksum x , by(group_var)
+. ranksum hsCRP, by(sex)
+
+Two-sample Wilcoxon rank-sum (Mann-Whitney) test
+
+         sex |      obs    rank sum    expected
+-------------+---------------------------------
+        Male |     2038     4611317     4586519
+      Female |     2462     5515933     5540731
+-------------+---------------------------------
+    combined |     4500    10127250    10127250
+
+unadjusted variance   1.882e+09
+adjustment for ties  -219482.36
+                     ----------
+adjusted variance     1.882e+09
+
+Ho: hsCRP(sex==Male) = hsCRP(sex==Female)
+             z =   0.572
+    Prob > |z| =   0.5676
+```
+สรุปคือ hsCRP ไม่ัมพันธ์กับ เพศ
+## Wilcoxon sign-ranked test
+แบบเดียวกับ paired t-test แต่เป็น Non parametric เช่นทดสอบว่าะคะแนนบางอย่างที่วัดโดย Nurse 1 เหมือนที่วัดโดย Nurse 2 ไหม
+```stata-out
+signrank var1 = var2
+. signrank nurse1 = nurse2
+
+Wilcoxon signed-rank test
+
+        sign |      obs   sum ranks    expected
+-------------+---------------------------------
+    positive |        6          55          57
+    negative |        6          59          57
+        zero |        3           6           6
+-------------+---------------------------------
+         all |       15         120         120
+
+unadjusted variance      310.00
+adjustment for ties       -7.50
+adjustment for zeros      -3.50
+                     ----------
+adjusted variance        299.00
+
+Ho: nurse1 = nurse2
+             z =  -0.116
+    Prob > |z| =   0.9079
+    Exact Prob =   0.9761 
+```
+สรุป คือ ไม่แตกต่างกัน
+## Spearman Correlation Coefficent
+ก็ใช้ใน Non-parametric ที่ดีคือใช้กับข้อมูลที่เป็น Ordinal ได้ คือถ้าเป็น Ratio ก็ไปใช้ Pearson Correlation ดีกว่า
+```stata-out
+. spearman hsCRP age, stats(rho p) matrix
+(obs=4500)
+
++-----------------+
+|  Key            |
+|-----------------|
+|   rho           |
+|   Sig. level    |
++-----------------+
+
+             |    hsCRP      age
+-------------+------------------
+       hsCRP |   1.0000 
+             | 
+             |
+         age |   0.2130   1.0000 
+             |   0.0000 
+             |
+```

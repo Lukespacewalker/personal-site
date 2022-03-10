@@ -1,0 +1,51 @@
+.card-container {
+  @apply flex flex-row flex-wrap gap-6;
+}
+
+.card {
+  @apply shadow-lg rounded-lg overflow-hidden transition-all;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 1)
+  );
+  flex: 1 1 100%;
+
+  @screen sm {
+    flex: 1 1 calc(50% - 1.5rem);
+  }
+/*
+  @screen xl {
+    flex: 1 1 calc(33.33333% - 1.5rem);
+  }
+  */
+
+  &.clickable {
+    @apply cursor-pointer relative;
+  }
+
+  &.clickable:after {
+    content: "";
+    @apply rounded-md transition-all absolute -top-0 left-0 right-0 bottom-0 opacity-0;
+    background: linear-gradient(to right, #642B73, #C6426Ecc);
+  }
+
+  &.clickable:hover:after {
+    @apply opacity-20;
+  }
+}
+
+.card-content {
+  @apply p-6 relative;
+
+  h2 {
+    @apply text-2xl py-2;
+  }
+}
+
+.card-image {
+  height: 15rem;
+  @screen sm {
+    height: 20rem;
+  }
+}

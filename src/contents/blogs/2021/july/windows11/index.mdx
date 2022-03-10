@@ -1,0 +1,122 @@
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+  type: "blog",
+  tag: "windows11",
+  date: "2021-07-27 22:09",
+  title: "ฟีเจอร์ของ Windows 11",
+  authors: ["myself"],
+  excerpt: "ฟีเจอร์ใหม่ๆ ที่น่าสนใจของ Windows 11",
+  background: "background.jpg",
+  images: [
+    "start.jpg",
+    "widget.jpg",
+    "action.jpg",
+    "notification.jpg",
+    "task-switcher.jpg",
+    "task-switcher-2.jpg",
+    "snap-helper.jpg",
+    "voice-typing.jpg",
+    "explorer.jpg",
+    "explorer-2.jpg",
+    "setting-1.jpg",
+    "setting-2.jpg",
+    "setting-3.jpg",
+    "store-1.jpg",
+    "store-2.jpg",
+    "team-1.jpg",
+    "team-2.jpg",
+  ],
+};
+
+# Start Menu
+
+Start Menu ย้ายมาอยู่ตรงกลางซึ่งสามารถกลับไปทางซ้ายและไม่มี Live Tile แล้ว
+
+<GatsbyImage image={getImage(props.images[0])} alt="poster" />
+
+# Widget
+
+มี Widget สำหรับแสดงข้อมูลในประเด็นที่เราเลือกซึ่งปัจจุบันยังมีเฉพาะของ Microsoft (ยังไม่มีของ 3rd parties) โดยเราสามารถ Interact กับ Winget ได้ แต่ถ้าเราที่หัวข้อเข้าไปจะเป็นการแบบหน้าเว็บแทนที่จะเป็น Application ที่เราติดตั้งไว้ เช่น To-Do Widget ไม่ได้เปิด Microsoft To-Do Application แต่เปิดหน้าเว็บของ Microsoft To-Do
+
+<GatsbyImage image={getImage(props.images[1])} alt="poster" />
+
+# Action Center
+
+ออกแบบใหม่และย้ายเอาส่วนควบคุม Media ของเครื่องมาไว้ตรงนี้ด้วย และส่วนของ Quick Action มีเมนูย่อย เช่น Wireless Accessibility และ Sound เพื่อให้สามารถตั้งค่าบางอย่างได้โดยตรงโดยไม่ต้องเปิด Setting
+
+<GatsbyImage image={getImage(props.images[2])} alt="poster" />
+
+# Notification Center
+
+ออกแบบใหม่ และเพิ่ม Calendar เข้ามา และเพิ่มการตั้งค่า Focus Assist เพื่อให้สามารถตั้งค่าได้จากตรงนี้ได้ด้วยนอกเหนือจากการตั้งค่าใน Action Center
+
+<GatsbyImage image={getImage(props.images[3])} alt="poster" />
+
+# Task Switcher
+
+ออกแบบใหม่ นอกเหนือจากกด Win+Tab แล้ว ได้เพิ่ม Task Swticher Icon ที่ Taskbar ด้วย และสามารถใช้การวาง 4 นิ้ว แล้เวปัดขึ้นบน Touchpad และบน Touchscreen เพื่อเข้าสู่ Task Swticher หรือใช้ 4 นิ้ว ปัดซ้ายขวาเพื่อเลื่อน Desktop
+
+<GatsbyImage image={getImage(props.images[4])} alt="poster" />
+
+วาง Cursor เหนือ Icon เพื่อดูและสลับไปยัง Dekstop อื่น
+
+<GatsbyImage image={getImage(props.images[5])} alt="poster" />
+
+# Snap Helper
+
+เมื่อวาง Cursor ที่ปุ่ม Maximize/Restore จะมี Snap helper ช่วยจัดหน้าต่างได้ โดยลดความจำเป็นที่จะต้องใช้ PowerToy หากเราไม่ได้จัดหน้าต่างที่ซับซ้อน
+
+<GatsbyImage image={getImage(props.images[6])} alt="poster" />
+
+# Voice Typing
+
+พิมพ์ด้วยเสียงได้ โดยรองรับภาษาไทย แต่จำเป็นต้องมีการเชื่อมต่อ Internet ด้วย
+
+<GatsbyImage image={getImage(props.images[7])} alt="poster" />
+
+# File Explorer
+
+File explorer ออกแบบเมนูและ Context Menu ใหม่ เพื่อให้สามารถสัมผัสด้วยนิ้วมือง่ายขึ้น
+
+<GatsbyImage image={getImage(props.images[8])} alt="poster" />
+
+ออกแบบ Contextual Menu ใหม่โดยใช้ Acrylic Material เป็นพื้นหลังและซ่อนเมนูอื่นๆ ที่ยังไม่รองรับ Contextual Menu ใหม่นี้ไว้ใน Show More Option ซึ่งใช้พื้นหลังเป็น Mica Material
+
+<GatsbyImage image={getImage(props.images[9])} alt="poster" />
+
+# Setting
+
+Setting ออกแบบใหม่ สามารถตั้งค่าต่างๆได้มากขึ้นโดยลดความจำเป็นที่จะต้องใช้ Control Panel
+
+<GatsbyImage image={getImage(props.images[10])} alt="poster" />
+
+ตัวอย่างเช่น การจัดการเสียง
+
+<GatsbyImage image={getImage(props.images[11])} alt="poster" />
+
+Touch keyboard สามารถปรับเปลี่ยนธีมของคีย์บอร์ดได้หรือคุณสามารถเปลี่ยนสีต่างๆด้วยตัวคุณเอง
+
+<GatsbyImage image={getImage(props.images[12])} alt="poster" />
+
+# Microsoft store
+
+ออกแบบใหม่ เป็นหมวดหมู่ หน้าตาดีขึ้น
+
+<GatsbyImage image={getImage(props.images[13])} alt="poster" />
+
+<GatsbyImage image={getImage(props.images[14])} alt="poster" />
+
+# Microsoft Team Personal
+
+Microsoft Team ได้ถูก Integrated เข้ากับ Windows 11 มาแทน Skype โดยสามารถใช้งานส่วนตัวได้ฟรี 
+
+- สามารถ Video call 1:1 ได้ 24 ชั่วโมง
+- Group call ได้สูงสุด 100 คน นาน 60 นาที และในช่วง Covid-19 ได้ปรับเป็น 300 คน นาน 24 ชั่วโมง
+- มี Calendar สามารถนัดหมายกิจกรรมช่วมกันได้
+
+โดยดูเพิ่มเติมได้ที่ <a href="https://www.microsoft.com/en-ww/microsoft-teams/teams-for-home">Microsoft Team For Home</a>
+
+<GatsbyImage image={getImage(props.images[15])} alt="poster" />
+
+<GatsbyImage image={getImage(props.images[16])} alt="poster" />

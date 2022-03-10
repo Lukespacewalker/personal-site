@@ -1,0 +1,32 @@
+.MDXRenderer-body {
+  @apply max-w-6xl mx-auto;
+
+  ul {
+    @apply list-disc ml-12 my-3;
+  }
+
+  ol {
+    @apply list-decimal ml-12 my-3;
+  }
+
+  p {
+    @apply mb-3 mt-1;
+    line-height: 2;
+  }
+
+  li {
+    line-height: 2;
+  }
+
+  h1 {
+    @apply mt-6;
+  }
+
+  .gatsby-image-wrapper{
+    @apply rounded-md sm:rounded-xl shadow-xl overflow-hidden my-6;
+  }
+
+  .image-container{
+    @apply mx-auto max-w-[700px] text-center text-gray-600;
+  }
+}

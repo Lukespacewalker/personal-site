@@ -1,0 +1,30 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+	type: "project",
+	tag: "checkup",
+	date: "2021-12-19 08:16",
+    authors: ["myself"],
+	title: "ระบบข้อมูลการตรวจสุขภาพ",
+	excerpt: "พัฒนาเพื่อช่วยในการเก็บข้อมูลตรวจสุขภาพอย่างเป็นระบบ แปลผลรายบุคคลแบบอัตโนมัติ และวิเคราะห์และแปลผลรายกลุ่มได้ง่ายขึ้น",
+	background: "checkup-new.jpg",
+	images: ["checkup-new"]
+}
+
+# ที่มา
+
+เดิมที่โรงพยาบาลที่ทำงาน ไม่มีระบบที่จะช่วยแปลผลรายบุคคลแบบอัตโนมัติ และการนำข้อมูลมาดูรายกลุ่มนั้นทำได้ยาก จึงพัฒนาเพื่อช่วยในการเก็บข้อมูลตรวจสุขภาพอย่างเป็นระบบ แปลผลรายบุคคลแบบอัตโนมัติ และวิเคราะห์และแปลผลรายกลุ่มได้ง่ายขึ้น
+
+# Technology stack ที่ใช้
+## Front End
+
+- Blazor Webassembly 
+
+## Back End
+
+- Asp.Net Core (.NET 6)
+- PostgreSQL โดยสร้างฐานข้อมูลแบบ Code-First โดยใช้ Entity Framework Core
+
+# สถานะปัจจุบัน
+
+สามารถเข้าดูได้ที่ [occmedsystem.ml](https://occmedsystem.ml/)

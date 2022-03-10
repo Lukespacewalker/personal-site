@@ -1,0 +1,11 @@
+@import "mixins";
+.two-content{
+    display: flex;
+    flex-direction: column;
+  }
+  
+  @include size(landscape-tablet) {
+    .two-content {
+      flex-direction: row;
+    }
+  }
