@@ -11,12 +11,8 @@ export const frontmatter = {
   images: [
     "google_form_0.jpg",
     "google_form_1.jpg",
-    "google_form_data_1.jpg",
-    "atk_analysis_1.jpg",
-    "atk_analysis_2.jpg",
-    "atk_analysis_3.jpg",
-    "app_development_1.jpg",
-  ],
+    "google_form_data_1.jpg","atk_analysis_1.jpg"
+  ]
 };
 
 # ที่มาของการพัฒนา
@@ -63,7 +59,7 @@ export const frontmatter = {
 
 ไม่น่าเชื่อว่านี้เป็นปัญหา แต่มันเป็นปัญหา คือ รายชื่อที่ได้จาก HR นั้นจะไม่มีเจ้าหน้าที่ Outsource หรือจ้างเหมา เช่น แม่บ้านเอกชน เจ้าหน้าที่ห้อง CT เป็นต้น และเหมือนมันไม่ได้ Update แบบล่าสุดคือ เหมือนมันยังมีรายชื่อคนที่ไม่ได้อยู่แล้วอยู่ในรายชื่อ ทำให้แผนจากในตอนแรกที่จะเอารายชื่อนี้เป็นฐานข้อมูล เพื่อที่จะได้บอกว่า กลุ่มงานและแผนก นี้มีกี่คน ตรวจกี่คน ครบไหม เป็นไปไม่ได้ ผมจึงต้องเอารายการตอบจาก Google Form ตั้งแต่เดือนกันยายน 2021 - กุมภาพันธ์ 2022 จำนวนประมาณ 14900 ครั้ง มาทำการประมวลผล ซึ่งจะมีปัญหาที่สำคัญ ที่ผมบอกไปคือ ข้อมูลมันกรอกเข้ามาผิด
 
-จึงต้องทำการ
+จึงต้องทำการ drop_duplicate(subset=[“Department”]) รายชื่อที่ได้จาก HR เพื่อให้เหลือแต่รายชื่อกลุ่มงานที่ไม่ซ้ำกัน แล้วสร้าง Primary Key ด้วย UUID4 แล้ว Export เป็น departments.json จากนั้น drop_duplicate(subset=[“Department”,”Division”]) สร้างรายชื่อแผนกที่ไม่ซ้ำกัน แล้วสร้าง Primary Key เช่นเดียวกัน และใช้ merge กับ departments เพื่อสร้าง Foreign key แล้ว Export เป็น divisions.json
 
 <div className="image-container">
   <GatsbyImage
@@ -71,3 +67,5 @@ export const frontmatter = {
     alt="poster"
   />
 </div>
+
+จากนั้นจึง 
