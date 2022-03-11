@@ -14,7 +14,10 @@ export const frontmatter = {
     "google_form_data_1.jpg",
     "atk_analysis_1.jpg",
     "atk_analysis_2.jpg",
-    "atk_analysis_3.jpg"
+    "atk_analysis_3.jpg",
+    "app_development_0.jpg",
+    "app_development_1.jpg",
+    "app_development_2.jpg",
   ]
 };
 
@@ -51,7 +54,7 @@ export const frontmatter = {
     image={props.images[2].childImageSharp.gatsbyImageData}
     alt="poster"
   />
-  <div>ข้อมูลที่ได้จาก Google Form ในรูปของ Google Sheet</div>
+  <p>ข้อมูลที่ได้จาก Google Form ในรูปของ Google Sheet</p>
 </div>
 
 เมื่อจะนำข้อมูลไปวิเคราะห์สถิติเชิงพรรณาว่าแบบแต่ละแผนกตรวจครบหรือไม่ ยังขาดใครจึงต้อง Clean ข้อมูลอย่างยากลำบาก แม้ว่าจะใช้ Pandas ช่วยแล้วก็ตาม ยังมีบางส่วนที่จำเป็นต้อง Clean ด้วยมือ อีกทั้งรายชื่อเจ้าหน้าที่ได้จาก HR ก็ดูเหมือนจะมีจำนวนเจ้าห้นาที่มากกว่าความจริง และไม่ได้รวมพวก Outsource หรือ นักศึกษาแพทย์อย่างครบถ้วน
@@ -62,13 +65,31 @@ export const frontmatter = {
 
 ไม่น่าเชื่อว่านี้เป็นปัญหา แต่มันเป็นปัญหา คือ รายชื่อที่ได้จาก HR นั้นจะไม่มีเจ้าหน้าที่ Outsource หรือจ้างเหมา เช่น แม่บ้านเอกชน เจ้าหน้าที่ห้อง CT เป็นต้น และเหมือนมันไม่ได้ Update แบบล่าสุดคือ เหมือนมันยังมีรายชื่อคนที่ไม่ได้อยู่แล้วอยู่ในรายชื่อ ทำให้แผนจากในตอนแรกที่จะเอารายชื่อนี้เป็นฐานข้อมูล เพื่อที่จะได้บอกว่า กลุ่มงานและแผนก นี้มีกี่คน ตรวจกี่คน ครบไหม เป็นไปไม่ได้ ผมจึงต้องเอารายการตอบจาก Google Form ตั้งแต่เดือนกันยายน 2021 - กุมภาพันธ์ 2022 จำนวนประมาณ 14900 ครั้ง มาทำการประมวลผล ซึ่งจะมีปัญหาที่สำคัญ ที่ผมบอกไปคือ ข้อมูลมันกรอกเข้ามาผิด
 
-จึงต้องทำการ drop_duplicate(subset=[“Department”]) รายชื่อที่ได้จาก HR เพื่อให้เหลือแต่รายชื่อกลุ่มงานที่ไม่ซ้ำกัน แล้วสร้าง Primary Key ด้วย UUID4 แล้ว Export เป็น departments.json จากนั้น drop_duplicate(subset=[“Department”,”Division”]) สร้างรายชื่อแผนกที่ไม่ซ้ำกัน แล้วสร้าง Primary Key เช่นเดียวกัน และใช้ merge กับ departments เพื่อสร้าง Foreign key แล้ว Export เป็น divisions.json
+# การเตรียมข้อมูล
+## เตรียมรายชื่อกลุ่มงาน (Department)
+
+หลักการคือผมต้องเตรียม Table ของแต่ละประเภทของ Entity แยกจากกัน และแต่ละ Entity จะมีความสัมพันธ์กันด้วย Primary และ Foreign Key เพื่อที่จะได้สามารถนำข้อมูลเข้าไปยัง Relational database ได้ ดังนั้นผมจะใช้ Pandas ผ่าน Jupyter ในการเตรียมข้อมูล นำเข้าไฟล์ HR โดยใช้ `pd.read_excel("HR.xlsx")` ก่อนจากนั้น `drop_duplicate(subset=[“Department”])` รายชื่อที่ได้จาก HR เพื่อให้ Dataframe เหลือแต่รายชื่อกลุ่มงานที่ไม่ซ้ำกัน แล้วสร้าง Primary Key ด้วย UUID4 แล้วส่งออกข้อมูลเป็น JSON โดยใช่ `pd.to_json("departments.json",orients="records")`
 
 <div className="image-container">
   <GatsbyImage
-    image={props.images[5].childImageSharp.gatsbyImageData}
+    image={props.images[7].childImageSharp.gatsbyImageData}
     alt="poster"
   />
+  <p>การเตรียมรายชื่อกลุ่มงาน</p>
 </div>
 
-จากนั้นจึง 
+## เตรียมรายชื่อแผนก (Division)
+
+ทำแบบเดียวกันนี้กับแผนก โดย `drop_duplicate(subset=[“Department”,”Division”])` เพื่อสร้าง Dataframe ที่มีรายชื่อแผนกที่ไม่ซ้ำกัน แล้วสร้าง Primary Key เช่นเดียวกัน และใช้ `df_divisions.merge(df_departments.rename(columns={"Id":"DepartmentId"}),how="left",on="กลุ่มงาน")` (join วิธีไหนก็ไม่ต่างกันในกรณีนี้) กับ departments เพื่อสร้าง Foreign key (ซึ่งก็คือ DepartmentId) แล้ว `pd.to_json()` เป็น divisions.json
+
+<div className="image-container">
+  <GatsbyImage
+    image={props.images[8].childImageSharp.gatsbyImageData}
+    alt="poster"
+  />
+  <p>การเตรียมรายชื่อแผนก</p>
+</div>
+
+## เตรียมรายชื่อคนตรวจ (Person)
+
+ผมจะยึดข้อมูลที่ตอบมาทาง Google form เป็นหลัก (แปลว่าถ้าใครไม่เคยตอบจะไม่มีชื่อ และผมรายการตอบใน Google form ว่า Entry เพราะการตอบใน Google form 14900 ครั้ง คือการรายงานผล ATK ในแต่ละครั้งซึ่งแน่นอนว่าชื่อคนย่อมต้องซ้ำกัน และคนที่ไม่เคยตอบเลยในช่วง 5 เดือน ก็ถือว่าอาจจะไม่อยู่แล้ว แต่ผมมีระบบ register ภายหลัง) เพราะว่าข้อมูลจาก HR มันไม่มี Outsource และมันยังไม่ได้ตัดคนที่ไปเรียนต่อ ลาออก หรือ ตาย บางส่วนออกไป โดยการทำการ left join ข้อมูลกับไฟล์ HR (เนื่องจากผมเชื่อถือ Personal data จาก HR มากกว่า Google form) โดยเริ่มจาก CitizenID ก่อน เป็น df_people_1 และเอา Entry ที่ไม่ matched มา left join ด้วยชื่อและนามสกุลพร้อมกัน ก็จะได้เป็น df_people_2 แล้วเอาเฉพาะคนที่ matched จากทั้งสอง Dataframe มารวมกัน `pd.concat([df_people_1,df_people_2]).query("_merge=='both'")`

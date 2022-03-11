@@ -1459,7 +1459,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.14.6, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.10.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.15.4, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
   version: 7.16.3
   resolution: "@babel/runtime@npm:7.16.3"
   dependencies:
@@ -5528,7 +5528,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:^2.18.0, commander@npm:^2.19.0, commander@npm:^2.20.0, commander@npm:^2.20.3":
+"commander@npm:^2.18.0, commander@npm:^2.20.0, commander@npm:^2.20.3":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
   checksum: ab8c07884e42c3a8dbc5dd9592c606176c7eb5c1ca5ff274bcf907039b2c41de3626f684ea75ccf4d361ba004bbaff1f577d5384c155f3871e456bdf27becf9e
@@ -6191,7 +6191,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.3, debug@npm:~4.3.1":
+"debug@npm:4, debug@npm:^4.0.1, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.3, debug@npm:~4.3.1":
   version: 4.3.3
   resolution: "debug@npm:4.3.3"
   dependencies:
@@ -8146,17 +8146,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-image@npm:^3.11.0":
-  version: 3.11.0
-  resolution: "gatsby-image@npm:3.11.0"
-  dependencies:
-    "@babel/runtime": ^7.14.6
-    object-fit-images: ^3.2.4
-    prop-types: ^15.7.2
-  checksum: da7e8d6fcde678969f4fdc22b2eda1235525ebf848bf1c04fc618920356ea0d8a55bec8a552f01cd7d7c7b3313c1af08dbd2efed198bc87ca4c9831518db4356
-  languageName: node
-  linkType: hard
-
 "gatsby-legacy-polyfills@npm:^2.9.0":
   version: 2.9.0
   resolution: "gatsby-legacy-polyfills@npm:2.9.0"
@@ -8387,18 +8376,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-pnpm@npm:^1.2.10":
-  version: 1.2.10
-  resolution: "gatsby-plugin-pnpm@npm:1.2.10"
-  dependencies:
-    lodash.get: ^4.4.2
-    lodash.uniq: ^4.5.0
-  peerDependencies:
-    gatsby: ~2.x.x || ~3.x.x || ~4.x.x
-  checksum: dbcb524bb86bb1cef89dee72ddc2390c687b9cfb26e34a4fc49f1847bba506bd5d88d54bdd3e654f03ff7c49ec26794ac344c5d2dc1b2f980da659f9dc475562
-  languageName: node
-  linkType: hard
-
 "gatsby-plugin-postcss@npm:^5.9.0":
   version: 5.9.0
   resolution: "gatsby-plugin-postcss@npm:5.9.0"
@@ -8483,15 +8460,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gatsby-plugin-smoothscroll@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "gatsby-plugin-smoothscroll@npm:1.2.0"
-  dependencies:
-    smoothscroll-polyfill: ^0.4.4
-  checksum: 6418916d3aced187e578096eb70bbd19e2ea19933df8c787a41ea4a820da4951c7fceeba3dece3b01462505c775f59445d44697caed1c3790f9ff85ae80dde9a
-  languageName: node
-  linkType: hard
-
 "gatsby-plugin-typescript@npm:^4.9.1":
   version: 4.9.1
   resolution: "gatsby-plugin-typescript@npm:4.9.1"
@@ -8532,22 +8500,6 @@ __metadata:
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
   checksum: f6683e753efc87f5d04fa8eb7a00c3c862d0d751f3ac0a08540f10a89759ae368367692eee1d9f335efc54c9b18f12889deaf734e273c0e63950ce4bf6db80c3
-  languageName: node
-  linkType: hard
-
-"gatsby-remark-katex@npm:^6.9.0":
-  version: 6.9.0
-  resolution: "gatsby-remark-katex@npm:6.9.0"
-  dependencies:
-    "@babel/runtime": ^7.15.4
-    rehype-parse: ^7.0.1
-    remark-math: ^4.0.0
-    unified: ^9.2.2
-    unist-util-visit: ^2.0.3
-  peerDependencies:
-    gatsby: ^4.0.0-next
-    katex: ^0.13.3
-  checksum: 5bd0773b6483d892e46535598b1ffca2ae2aa2d68e953dbf6b7375e08948d02d13a6f81f978bcfe395687da153c1fd30c900fcf8a96d471b156dca20b76ea447
   languageName: node
   linkType: hard
 
@@ -10854,17 +10806,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"katex@npm:^0.12.0":
-  version: 0.12.0
-  resolution: "katex@npm:0.12.0"
-  dependencies:
-    commander: ^2.19.0
-  bin:
-    katex: cli.js
-  checksum: f424c90b2b43034163cee37dd75f7c1f93206580cbaea07703a322010b615c32249d4648974d58f7345ad113431a43c2e8ae2118aed3a06fe37ad46dfdcf6d10
-  languageName: node
-  linkType: hard
-
 "katex@npm:^0.13.0":
   version: 0.13.24
   resolution: "katex@npm:0.13.24"
@@ -11212,7 +11153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.get@npm:^4, lodash.get@npm:^4.4.2":
+"lodash.get@npm:^4":
   version: 4.4.2
   resolution: "lodash.get@npm:4.4.2"
   checksum: e403047ddb03181c9d0e92df9556570e2b67e0f0a930fcbbbd779370972368f5568e914f913e93f3b08f6d492abc71e14d4e9b7a18916c31fa04bd2306efe545
@@ -11303,7 +11244,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"longest-streak@npm:^2.0.0, longest-streak@npm:^2.0.1":
+"longest-streak@npm:^2.0.1":
   version: 2.0.4
   resolution: "longest-streak@npm:2.0.4"
   checksum: 28b8234a14963002c5c71035dee13a0a11e9e9d18ffa320fdc8796ed7437399204495702ed69cd2a7087b0af041a2a8b562829b7c1e2042e73a3374d1ecf6580
@@ -11520,17 +11461,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-math@npm:^0.1.0":
-  version: 0.1.2
-  resolution: "mdast-util-math@npm:0.1.2"
-  dependencies:
-    longest-streak: ^2.0.0
-    mdast-util-to-markdown: ^0.6.0
-    repeat-string: ^1.0.0
-  checksum: e2fc09ed31197b751bca73ee0271621d46866377c82325a4ae35c5ea47525649416e63ad6197277a966058458e97af7342f6a2b46dbde8086f69a85cf373df5b
-  languageName: node
-  linkType: hard
-
 "mdast-util-math@npm:^2.0.0":
   version: 2.0.0
   resolution: "mdast-util-math@npm:2.0.0"
@@ -11555,20 +11485,6 @@ __metadata:
     unist-util-position: ^3.0.0
     unist-util-visit: ^2.0.0
   checksum: e5f385757df7e9b37db4d6f326bf7b4fc1b40f9ad01fc335686578f44abe0ba46d3e60af4d5e5b763556d02e65069ef9a09c49db049b52659203a43e7fa9084d
-  languageName: node
-  linkType: hard
-
-"mdast-util-to-markdown@npm:^0.6.0":
-  version: 0.6.5
-  resolution: "mdast-util-to-markdown@npm:0.6.5"
-  dependencies:
-    "@types/unist": ^2.0.0
-    longest-streak: ^2.0.0
-    mdast-util-to-string: ^2.0.0
-    parse-entities: ^2.0.0
-    repeat-string: ^1.0.0
-    zwitch: ^1.0.0
-  checksum: 7ebc47533bff6e8669f85ae124dc521ea570e9df41c0d9e4f0f43c19ef4a8c9928d741f3e4afa62fcca1927479b714582ff5fd684ef240d84ee5b75ab9d863cf
   languageName: node
   linkType: hard
 
@@ -11603,13 +11519,6 @@ __metadata:
   version: 1.1.0
   resolution: "mdast-util-to-string@npm:1.1.0"
   checksum: eec1eb283f3341376c8398b67ce512a11ab3e3191e3dbd5644d32a26784eac8d5f6d0b0fb81193af00d75a2c545cde765c8b03e966bd890076efb5d357fb4fe2
-  languageName: node
-  linkType: hard
-
-"mdast-util-to-string@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "mdast-util-to-string@npm:2.0.0"
-  checksum: 0b2113ada10e002fbccb014170506dabe2f2ddacaacbe4bc1045c33f986652c5a162732a2c057c5335cdb58419e2ad23e368e5be226855d4d4e280b81c4e9ec2
   languageName: node
   linkType: hard
 
@@ -11765,16 +11674,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromark-extension-math@npm:^0.1.0":
-  version: 0.1.2
-  resolution: "micromark-extension-math@npm:0.1.2"
-  dependencies:
-    katex: ^0.12.0
-    micromark: ~2.11.0
-  checksum: 0587c55e65deacce17d1a5bc257409c528c92e6012d1c60ad2872554059213c42a729727a6924735b0cb2fc4995488f98d2088010fc15e0914873236828d1fd6
-  languageName: node
-  linkType: hard
-
 "micromark-extension-math@npm:^2.0.0":
   version: 2.0.2
   resolution: "micromark-extension-math@npm:2.0.2"
@@ -11842,16 +11741,6 @@ __metadata:
   version: 1.0.2
   resolution: "micromark-util-types@npm:1.0.2"
   checksum: 08dc901b7c06ee3dfeb54befca05cbdab9525c1cf1c1080967c3878c9e72cb9856c7e8ff6112816e18ead36ce6f99d55aaa91560768f2f6417b415dcba1244df
-  languageName: node
-  linkType: hard
-
-"micromark@npm:~2.11.0":
-  version: 2.11.4
-  resolution: "micromark@npm:2.11.4"
-  dependencies:
-    debug: ^4.0.0
-    parse-entities: ^2.0.0
-  checksum: f8a5477d394908a5d770227aea71657a76423d420227c67ea0699e659a5f62eb39d504c1f7d69ec525a6af5aaeb6a7bffcdba95614968c03d41d3851edecb0d6
   languageName: node
   linkType: hard
 
@@ -12614,13 +12503,6 @@ __metadata:
     define-property: ^0.2.5
     kind-of: ^3.0.3
   checksum: a9e35f07e3a2c882a7e979090360d1a20ab51d1fa19dfdac3aa8873b328a7c4c7683946ee97c824ae40079d848d6740a3788fa14f2185155dab7ed970a72c783
-  languageName: node
-  linkType: hard
-
-"object-fit-images@npm:^3.2.4":
-  version: 3.2.4
-  resolution: "object-fit-images@npm:3.2.4"
-  checksum: a1adab3e09fdc4f5addbd0895eeffbaa5018ffabb95382cd1bbf86bb813d21ca575ec4be4fdc5470fdaa25579a781748fd0b37308156d3605004256497d2d264
   languageName: node
   linkType: hard
 
@@ -14350,13 +14232,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-refresh@npm:^0.11.0":
-  version: 0.11.0
-  resolution: "react-refresh@npm:0.11.0"
-  checksum: 112178a05b1e0ffeaf5d9fb4e56b4410a34a73adeb04dbf13abdc50d9ac9df2ada83e81485156cca0b3fa296aa3612751b3d6cd13be4464642a43679b819cbc7
-  languageName: node
-  linkType: hard
-
 "react-refresh@npm:^0.9.0":
   version: 0.9.0
   resolution: "react-refresh@npm:0.9.0"
@@ -14607,16 +14482,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rehype-parse@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "rehype-parse@npm:7.0.1"
-  dependencies:
-    hast-util-from-parse5: ^6.0.0
-    parse5: ^6.0.0
-  checksum: c3c914aa9281853290eff6b09e0bed6843934e788b957e25219e91f0bf244a183d2f5e042c7d21543276571f9b49a6bae90f4640b8f885f2773392ffa57baf4b
-  languageName: node
-  linkType: hard
-
 "rehype-parse@npm:^8.0.0":
   version: 8.0.3
   resolution: "rehype-parse@npm:8.0.3"
@@ -14633,16 +14498,6 @@ __metadata:
   version: 2.0.0
   resolution: "remark-footnotes@npm:2.0.0"
   checksum: f2f87ffd6fe25892373c7164d6584a7cb03ab0ea4f186af493a73df519e24b72998a556e7f16cb996f18426cdb80556b95ff252769e252cf3ccba0fd2ca20621
-  languageName: node
-  linkType: hard
-
-"remark-math@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "remark-math@npm:4.0.0"
-  dependencies:
-    mdast-util-math: ^0.1.0
-    micromark-extension-math: ^0.1.0
-  checksum: 5e2d04c4bdd79e4fa0210db096ab68f471873e60b8394727d242c2d2c7cbf256998061b69d638cee80614f06681522a0a51c212cc87da27947198ef48c67655d
   languageName: node
   linkType: hard
 
@@ -14824,7 +14679,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"repeat-string@npm:^1.0.0, repeat-string@npm:^1.5.2, repeat-string@npm:^1.5.4, repeat-string@npm:^1.6.1":
+"repeat-string@npm:^1.5.2, repeat-string@npm:^1.5.4, repeat-string@npm:^1.6.1":
   version: 1.6.1
   resolution: "repeat-string@npm:1.6.1"
   checksum: 1b809fc6db97decdc68f5b12c4d1a671c8e3f65ec4a40c238bc5200e44e85bcc52a54f78268ab9c29fcf5fe4f1343e805420056d1f30fa9a9ee4c2d93e3cc6c0
@@ -15591,13 +15446,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smoothscroll-polyfill@npm:^0.4.4":
-  version: 0.4.4
-  resolution: "smoothscroll-polyfill@npm:0.4.4"
-  checksum: b99ff7d91689d563ec69cb1d29713b332a24c88ac3dc4ef9ef9fbe4137305336e67253211067c5f786478dbdabd2aa6c2033709d4d8feca327b09eca8d5a0e7b
-  languageName: node
-  linkType: hard
-
 "snake-case@npm:^2.1.0":
   version: 2.1.0
   resolution: "snake-case@npm:2.1.0"
@@ -16272,7 +16120,6 @@ __metadata:
     autoprefixer: ^10.4.2
     esm: ^3.2.25
     gatsby: ^4.9.3
-    gatsby-image: ^3.11.0
     gatsby-plugin-anchor-links: ^1.2.1
     gatsby-plugin-canonical-urls: ^4.9.0
     gatsby-plugin-google-gtag: ^4.9.0
@@ -16280,15 +16127,12 @@ __metadata:
     gatsby-plugin-manifest: ^4.9.1
     gatsby-plugin-mdx: 3.9.1
     gatsby-plugin-no-sourcemaps: ^4.9.0
-    gatsby-plugin-pnpm: ^1.2.10
     gatsby-plugin-postcss: ^5.9.0
     gatsby-plugin-react-helmet: ^5.9.0
     gatsby-plugin-sass: ^5.9.0
     gatsby-plugin-sharp: ^4.9.1
     gatsby-plugin-sitemap: ^5.9.0
-    gatsby-plugin-smoothscroll: ^1.2.0
     gatsby-plugin-typescript: ^4.9.1
-    gatsby-remark-katex: ^6.9.0
     gatsby-source-filesystem: ^4.9.1
     gatsby-transformer-json: ^4.9.0
     gatsby-transformer-sharp: ^4.9.0
@@ -16304,7 +16148,6 @@ __metadata:
     react-dom: ^17.0.2
     react-helmet: ^6.1.0
     react-intersection-observer: ^8.33.1
-    react-refresh: ^0.11.0
     rehype-katex: ^6.0.2
     remark-math: ^5.1.1
     remark-slug: ^7.0.1
@@ -17045,20 +16888,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unified@npm:^9.2.2":
-  version: 9.2.2
-  resolution: "unified@npm:9.2.2"
-  dependencies:
-    bail: ^1.0.0
-    extend: ^3.0.0
-    is-buffer: ^2.0.0
-    is-plain-obj: ^2.0.0
-    trough: ^1.0.0
-    vfile: ^4.0.0
-  checksum: 7c24461be7de4145939739ce50d18227c5fbdf9b3bc5a29dabb1ce26dd3e8bd4a1c385865f6f825f3b49230953ee8b591f23beab3bb3643e3e9dc37aa8a089d5
-  languageName: node
-  linkType: hard
-
 "union-value@npm:^1.0.0":
   version: 1.0.1
   resolution: "union-value@npm:1.0.1"
@@ -17292,7 +17121,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"unist-util-visit@npm:2.0.3, unist-util-visit@npm:^2.0.0, unist-util-visit@npm:^2.0.3":
+"unist-util-visit@npm:2.0.3, unist-util-visit@npm:^2.0.0":
   version: 2.0.3
   resolution: "unist-util-visit@npm:2.0.3"
   dependencies:
