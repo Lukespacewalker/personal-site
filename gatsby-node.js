@@ -23,6 +23,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
     });
 };
 
+
 exports.onCreateNode = ({ node, getNode, actions }) => {
     const { createNodeField } = actions;
     if (node.internal.type === `Mdx`) {
@@ -67,9 +68,9 @@ exports.createPages = ({ graphql, actions }) => {
 exports.createSchemaCustomization = ({ actions, schema }) => {
     const { createTypes } = actions;
     const typeDefs = [
-        "type Mdx implements Node { frontmatter: MdxFrontmatter }",
+        `type Mdx implements Node { frontmatter: MdxFrontmatter }`,
         `type MdxFrontmatter {
-            authors: [AuthorslistJson] @link(by: "unique") 
+            authors: [AuthorslistJson] @link(by: "unique")
         }`
     ];
     createTypes(typeDefs);

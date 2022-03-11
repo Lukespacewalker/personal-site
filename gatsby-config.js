@@ -47,6 +47,9 @@ module.exports = {
         },
         `gatsby-plugin-no-sourcemaps`,
         `gatsby-plugin-react-helmet`,
+        `gatsby-plugin-image`,
+        `gatsby-plugin-sharp`,
+        `gatsby-transformer-sharp`,
         `gatsby-plugin-sitemap`,
         {
             resolve: `gatsby-source-filesystem`,
@@ -76,9 +79,6 @@ module.exports = {
         },
         `gatsby-plugin-typescript`,
         `gatsby-transformer-json`,
-        `gatsby-plugin-image`,
-        `gatsby-plugin-sharp`,
-        `gatsby-transformer-sharp`,
         {
             resolve: `gatsby-plugin-manifest`,
             options: {
