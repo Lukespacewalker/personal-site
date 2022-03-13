@@ -202,7 +202,7 @@ export const pageQuery = graphql`
           name
           publicURL
           childImageSharp {
-            gatsbyImageData(quality: 90, layout: CONSTRAINED, height: 700)
+            gatsbyImageData(quality: 90, layout: CONSTRAINED, height: 800)
           }
         }
       }

@@ -15,6 +15,7 @@ Prism.languages["stata-out"] = {
 };
 
 require("prismjs/components/prism-csharp");
+require("prismjs/components/prism-cshtml");
 
 export class Pre extends React.Component<{ children: any }, {}>{
   constructor(props) {

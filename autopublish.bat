@@ -1,5 +1,6 @@
 @echo "Copy website to staging area"
-xcopy "public\*" "..\lukespacewalker.github.io\" /s /e /y
+xcopy "public\*" "..\..\lukespacewalker.github.io\" /s /e /y
+cd ..
 cd ..
 cd "lukespacewalker.github.io"
 @echo "Download lastest information from GitHub"

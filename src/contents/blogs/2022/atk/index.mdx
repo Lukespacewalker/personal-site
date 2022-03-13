@@ -6,7 +6,8 @@ export const frontmatter = {
   date: "2022-03-09 17:24",
   title: "การพัฒนาระบบข้อมูล ATK",
   authors: ["myself"],
-  excerpt: "กว่าจะเป็นระบบข้อมูล ATK เพื่อมาใช้ทดแทนระบบเก่าที่กากนั้นคือ Google form",
+  excerpt:
+    "กว่าจะเป็นระบบข้อมูล ATK เพื่อมาใช้ทดแทนระบบเก่าที่กากนั้นคือ Google form",
   background: "bg.jpg",
   images: [
     "google_form_0.jpg",
@@ -18,7 +19,18 @@ export const frontmatter = {
     "app_development_0.jpg",
     "app_development_1.jpg",
     "app_development_2.jpg",
-  ]
+    "app_development_3.jpg",
+    "app_development_4.jpg",
+    "app_development_5.jpg",
+    "app_development_6.jpg",
+    "app_development_7.jpg",
+    "app_1.jpg",
+    "app_2.jpg",
+    "app_3.jpg",
+    "app_4.jpg",
+    "app_5.jpg",
+    "app_6.jpg",
+  ],
 };
 
 # ที่มาของการพัฒนา
@@ -29,21 +41,24 @@ export const frontmatter = {
 - เสี่ยงสูง ตรวจเดือนละ 4 ครั้ง
 - เสี่ยงกลาง ตรวจเดือนละ 2 ครั้ง
 - เสี่ยงต่ำ ตรวจเดือนละ 1 ครั้ง
-  จากนั้นก็ต้องทำระบบรายงานผลการตรวจ ATK ซึ่งในตอนแรกเลือกใช้ Google Form เนื่องจากทำง่าย และได้ข่าวว่าทาง IT จะทำระบบที่มันดีกว่านี้มาแทนอยู่แล้ว
+
+จึงต้องทำระบบรายงานผลการตรวจ ATK ซึ่งในตอนแรกเลือกใช้ Google Form เนื่องจากทำง่าย และได้ข่าวว่าทาง IT จะทำระบบที่มันดีกว่านี้มาแทนอยู่แล้ว
 
 <div className="image-container">
+  <div className="flex flex-col md:flex-row gap-3">
   <GatsbyImage
-    image={props.images[0].childImageSharp.gatsbyImageData}
+    image={props.images.find(e=>e.name=="google_form_0").childImageSharp.gatsbyImageData}
     alt="poster"
   />
   <GatsbyImage
-    image={props.images[1].childImageSharp.gatsbyImageData}
+    image={props.images.find(e=>e.name=="google_form_1").childImageSharp.gatsbyImageData}
     alt="poster"
   />
+  </div>
   <div>ภาพ Google Form ที่ใช้เก็บข้อมูล</div>
 </div>
 
-# ปัญหาที่เจอหลังการใช้ Google Form ในการเก็บข้อมูล
+## ปัญหาที่เจอหลังการใช้ Google Form ในการเก็บข้อมูล
 
 เนื่องจาก Google form นั้นไม่สามารถตั้งกฎเกณฑ์ในการ Validate ข้อมูลได้มากนัก เช่น เลขประจำตัว 13 หลัก ผมทำได้แค่ Regular expression ^\d{13}$ แต่ไม่สามารถคำนวนเพื่อตรวจสอบกับเลขหลักหน่วยได้ และไม่สามารถสอบวันที่กรอกได้ ทำให้มีทั้งคนกรอกปี พ.ศ บ้าง คศ. บ้าง หรือวันเกิด มาในช่องวันตรวจ
 
@@ -51,7 +66,10 @@ export const frontmatter = {
 
 <div className="image-container">
   <GatsbyImage
-    image={props.images[2].childImageSharp.gatsbyImageData}
+    image={
+      props.images.find((e) => e.name == "google_form_data_1").childImageSharp
+        .gatsbyImageData
+    }
     alt="poster"
   />
   <p>ข้อมูลที่ได้จาก Google Form ในรูปของ Google Sheet</p>
@@ -61,16 +79,45 @@ export const frontmatter = {
 
 หลังจากทนมาหลายเดือน ที่วิเคราะห์ข้อมูลอย่างยากลำบาก และยังไม่มีระบบอื่นมาทดแทน Google Form จึงตัดสินใจพัฒนาเองในช่วงปลายเดือนกุมภาพันธ์ 2022
 
-# ปํญหาที่สำคัญคือไม่มีรายชื่อเจ้าหน้าที่ที่ตรวจ ATK ที่ถูกต้อง
+## ปํญหาที่สำคัญคือไม่มีรายชื่อเจ้าหน้าที่ที่ตรวจ ATK ที่ถูกต้อง
 
 ไม่น่าเชื่อว่านี้เป็นปัญหา แต่มันเป็นปัญหา คือ รายชื่อที่ได้จาก HR นั้นจะไม่มีเจ้าหน้าที่ Outsource หรือจ้างเหมา เช่น แม่บ้านเอกชน เจ้าหน้าที่ห้อง CT เป็นต้น และเหมือนมันไม่ได้ Update แบบล่าสุดคือ เหมือนมันยังมีรายชื่อคนที่ไม่ได้อยู่แล้วอยู่ในรายชื่อ ทำให้แผนจากในตอนแรกที่จะเอารายชื่อนี้เป็นฐานข้อมูล เพื่อที่จะได้บอกว่า กลุ่มงานและแผนก นี้มีกี่คน ตรวจกี่คน ครบไหม เป็นไปไม่ได้ ผมจึงต้องเอารายการตอบจาก Google Form ตั้งแต่เดือนกันยายน 2021 - กุมภาพันธ์ 2022 จำนวนประมาณ 14900 ครั้ง มาทำการประมวลผล ซึ่งจะมีปัญหาที่สำคัญ ที่ผมบอกไปคือ ข้อมูลมันกรอกเข้ามาผิด
+
+## ปํญหาในการวิเคราะห์ข้อมูลจาก Google Form
+
+ข้อมูลที่ได้มันต้องมาทำความสะอาดอย่างเยอะ และค่อนข้าง Manual เสียเวลา
+
+<div className="image-container">
+  <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "atk_analysis_1").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+    <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "atk_analysis_2").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+    <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "atk_analysis_3").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>การวิเคราะห์ข้อมูล</p>
+</div>
 
 # การเตรียมข้อมูล
 
 ## ทำความสะอาดข้อมูลวันที่ตรวจ
 
 ข้อมูลที่กรอกเข้ามามีความผิดพลาด เช่น ใส่วันเกิดในวันที่ตรวจ ใส่เดือนและปีผิด (คือใส่ไปในอดีตที่ก่อนหน้าโครงงานตรวจหรือใส่ไปในอนาคต) หรือใส่สลับไปมาหระหว่าง คส และ พศ
-ทำให้มีความจำเป็นต้องการทำความสะอาดข้อมูลโดยผมจะตรวจสอบว่าวันตรวจว่าอยู่ในช่วงเวลาที่ถูกต้องไหมหากไม่ถูกต้องจะ Timestamp มาใช้แทน 
+ทำให้มีความจำเป็นต้องการทำความสะอาดข้อมูลโดยผมจะตรวจสอบว่าวันตรวจว่าอยู่ในช่วงเวลาที่ถูกต้องไหมหากไม่ถูกต้องจะ Timestamp มาใช้แทน
 
 ## เตรียมข้อมูลรายชื่อกลุ่มงาน (Department)
 
@@ -78,7 +125,10 @@ export const frontmatter = {
 
 <div className="image-container">
   <GatsbyImage
-    image={props.images[7].childImageSharp.gatsbyImageData}
+    image={
+      props.images.find((e) => e.name == "app_development_1").childImageSharp
+        .gatsbyImageData
+    }
     alt="poster"
   />
   <p>การเตรียมรายชื่อกลุ่มงาน</p>
@@ -90,7 +140,10 @@ export const frontmatter = {
 
 <div className="image-container">
   <GatsbyImage
-    image={props.images[8].childImageSharp.gatsbyImageData}
+    image={
+      props.images.find((e) => e.name == "app_development_2").childImageSharp
+        .gatsbyImageData
+    }
     alt="poster"
   />
   <p>การเตรียมรายชื่อแผนก</p>
@@ -100,22 +153,78 @@ export const frontmatter = {
 
 ผมจะยึดข้อมูลที่ตอบมาทาง Google form เป็นหลัก (แปลว่าถ้าใครไม่เคยตอบจะไม่มีชื่อ และผมรายการตอบใน Google form ว่า Entry เพราะการตอบใน Google form 14900 ครั้ง คือการรายงานผล ATK ในแต่ละครั้งซึ่งแน่นอนว่าชื่อคนย่อมต้องซ้ำกัน และคนที่ไม่เคยตอบเลยในช่วง 5 เดือน ก็ถือว่าอาจจะไม่อยู่แล้ว แต่ผมมีระบบ register ภายหลัง) เพราะว่าข้อมูลจาก HR มันไม่มี Outsource และมันยังไม่ได้ตัดคนที่ไปเรียนต่อ ลาออก หรือ ตาย บางส่วนออกไป โดยการทำการ left join ข้อมูลกับไฟล์ HR (เนื่องจากผมเชื่อถือ Personal data จาก HR มากกว่า Google form) โดยเริ่มจาก CitizenID ก่อน เป็น df_people_1 และเอา Entry ที่ไม่ matched มา left join ด้วยชื่อและนามสกุลพร้อมกัน ก็จะได้เป็น df_people_2 แล้วเอาเฉพาะคนที่ matched จากทั้งสอง Dataframe มารวมกัน `pd.concat([df_people_1,df_people_2]).query("_merge=='both'")`
 
-ที่นี้จะเหลือแต่คนที่ไม่ matched อะไรเลย ตรงนี้ผมและทีมงานจำเป็นต้องตรวจสอบและแก้ไขด้วยมือซึ่งมีประมาณ 200 กว่า Entry 
+ที่นี้จะเหลือแต่คนที่ไม่ matched อะไรเลย ตรงนี้ผมและทีมงานจำเป็นต้องตรวจสอบและแก้ไขด้วยมือซึ่งมีประมาณ 200 กว่า Entry
 จากนั้น จึงนำเข้าไปรวมกับรายชื่อที่ได้ในตอนแรก
 
-เมื่อรวมรายชื่อแล้ว ก็สร้าง Primary Key ด้วย UUI4 เหมือนเดิม
+<div className="image-container">
+  <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_development_3").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>การรวมรายชื่อที่ทำความสะอาดแล้ว</p>
+</div>
+
+เมื่อรวมรายชื่อแล้ว ก็สร้าง Primary Key ด้วย UUID4 เหมือนเดิม
+
+<div className="image-container">
+  <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_development_4").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>การเตรียมรายชื่อคน</p>
+</div>
 
 ## เตรียมข้อมูลชนิดของ ATK
 
 ใช้หลักการเดิมคือ `drop_duplicate` ยี่ห้อ ATK ที่ตรวจ แต่พบปัญหาคือข้อมูลยี่ห้อ ATK ที่ตรวจ มันมีถึง 200 แบบ ซึ่งเกิดจากการพิมพ์ยี่ห้อที่ใช้ดรวจมันไม่ consistency เลย ผมจึงต้องแก้ไข้โดย
+
 1. Replace ชื่อยี่ห้อการตรวจในของ Entries 14900 ครั้ง โดยดูจาก string 200 แบบว่ามันมี pattern อะไรบ้าง และมันเป็นของยี่ห้อไหน แล้วใช้ Regular expression ในการ Replace
-2. อันที่ดูไม่รู้เรื่อง ก็ใช้ข้อมูลเฃช่วงวันการตรวจว่า เป็นช่วงที่แจก ATK ยี่ห้อไหนแทน
+2. อันที่ดูไม่รู้เรื่อง ก็ใช้ข้อมูลช่วงวันการตรวจว่า เป็นช่วงที่แจก ATK ยี่ห้อไหนแทน
+
+<div className="image-container">
+  <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_development_5").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>ทำความสะอาดรายชื่อ ATK</p>
+</div>
 
 เมื่อทำแล้วจะเหลือ ATK อยู่ไม่กี่ยี่ห้อ แล้วจึง `drop_duplicate` แล้วสร้าง Primary Key ด้วย UUID4 เช่นเดิม แล้ว export เป็น atk.json
+
+<div className="image-container">
+  <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_development_6").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>การเตรียมรายชื่อ ATK</p>
+</div>
 
 ## เตรียมข้อมูลรายการตรวจ (Entry)
 
 ตรงนี้ก็จะง่ายขึ้นแล้ว เพราะส่วนยากของการเตรียมข้อมูลได้ทำไปหมดแล้ว ตรงนี้เหลือแค่สร้าง Primary Key ด้วย UUID4 จากนั้นตัด columns ที่ไม่จำเป็นออกไป (เพราะเราจะ inner join กับ table อื่น) แล้ว inner join (เพราะลอง left join แล้วพบว่าข้อมูลมันตรงกันหมด แน่หล่ะ มันมาจากแหล่งข้อมูลเดียวกัน) กับ atk และ people เพื่อให้ได้ foregin key AntigenTestKitId และ PersonId
+
+<div className="image-container">
+  <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_development_7").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>การเตรียมรายการตรวจ</p>
+</div>
 
 # พัฒนาโปรแกรม
 
@@ -125,19 +234,187 @@ export const frontmatter = {
 
 ### FrontEnd : Blazor Webassembly
 
-ก็คล้ายๆ กับ React แต่แทนที่จะเป็น Javascript กลายเป็น C# แทน (แต่ยังสามารถใช้ Javascript และใช้ Javascript Interop ได้) ตัว Blazor componenet (ไฟล์ .razor แบบเดียวกันกับ Razor page) จะผสมกันระหว่าง HTML CSS Javascript และ C# 
+ก็คล้ายๆ กับ React แต่แทนที่จะเป็น Javascript กลายเป็น C# แทน (แต่ยังสามารถใช้ Javascript และใช้ Javascript Interop ได้) ตัว Blazor componenet (ไฟล์ .razor แบบเดียวกันกับ Razor page) จะผสมกันระหว่าง HTML CSS Javascript และ C#
+
+```razor
+@page "/register"
+@layout IndexLayout
+@using ATKSurvey.Client.Models
+@using ATKSurvey.Client.Services
+@using ATKSurvey.Shared.Dto.Account
+@inject DepartmentService departmentService
+@inject DivisionService divisionService
+@inject AccountService accountService
+@inject IStringLocalizer<RegisterPage> Loc
+@inject NavigationManager nav
+<PageHeader Messages=Messages>
+    <ChildContent>
+        <h1>@Loc["Register new account"]</h1>
+    </ChildContent>
+    <Controls>
+        <Button SymbolIcon=SymbolIcon.CloudUpload Type="submit" form="reg-form"
+        ButtonType=CardButtonType.Primary>@Loc["Register"]</Button>
+    </Controls>
+</PageHeader>
+<LoadingView IsReady=IsReady>
+    <EditForm id="reg-form" Model=RegDto OnValidSubmit=OnValidSubmitHandler>
+        <DataAnnotationsValidator />
+        <h2>@Loc["Account information"]</h2>
+        <InputTextEx Label=@Loc["Username"] @bind-Value=RegDto.UserName />
+        <InputTextEx type="password" Label=@Loc["Password"] @bind-Value=RegDto.Password />
+        <InputTextEx type="password" Label=@Loc["Confirmed password"] @bind-Value=RegDto.ConfirmedPassword />
+        <h2>@Loc["Basic information"]</h2>
+        <InputSelectEx @bind-Value=RegDto.Title Label="คำนำหน้า">
+            <option value=@Title.Mr>นาย</option>
+            <option value=@Title.Miss>นางสาว</option>
+            <option value=@Title.Mrs>นาง</option>
+        </InputSelectEx>
+        <InputTextEx @bind-Value=RegDto.Name Label=@Loc["Name"] />
+        <InputTextEx @bind-Value=RegDto.Surname Label=@Loc["Surname"] />
+    ..omitted..
+    </EditForm>
+</LoadingView>
+```
+```csharp
+@code{
+   private bool IsReady;
+    private List<UIMessage> Messages = new List<UIMessage>();
+    private List<Department> Departments = new List<Department>();
+    private List<Division> Divisions = new List<Division>();
+
+    private RegistrationDTO RegDto = new RegistrationDTO();
+    [CascadingParameter]
+    private Task<AuthenticationState> authTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if ((await authTask).User.Identity.IsAuthenticated)
+        {
+            nav.NavigateTo("/");
+        }
+        else
+        {
+            var deT = departmentService.GetPublic();
+            var diT = divisionService.GetPublic();
+            await Task.WhenAll(deT, diT);
+            Departments.AddRange(deT.Result);
+            Divisions.AddRange(diT.Result);
+            IsReady = true;
+            await base.OnInitializedAsync();
+        }
+    }
+    ..omitted..
+}
+```
+<p className="text-center">ตัวอย่าง ฺBlazor บางส่วนของหน้าสมัครผู้ใช้งาน</p>
 
 ส่วนของ CSS นั้น ผมไม่เขียนเองโดยตรงทั้งหมดแต่ใช้ Tailwind CSS 3 ช่วย มันทำให้งานง่ายตรงที่เราสามารถใช้ Utility class ทั้งหมด ใส่ลงไปใน <tag class="" /> ได้เลย โดยไม่ต้องสลับไปมาระหว่าง CSS และมันสามารถ Trim ตัว CSS ให้เหลือเฉพาะที่เราใช้จริงๆ ได้ และถามว่า class จะ รกไปหมดไหม ก็ตอบว่ามันแก้ได้โดยการที่เรา สร้าง Blazor component ขึ้นมาใหม่ หรือเรารวมเป็น class เดียวกันได้แบบนี้
+
 ```css
-@layer componenets{
-  .my-component{
+@layer componenets {
+  .my-component { 
     @apply rounded-xl shadow-xl flex flex-row gap-6 flex-wrap;
   }
 }
 ```
+<p className="text-center">ตัวอย่างการใช้งาน Tailwind CSS</p>
 
 ### BackEnd : ASP.Net Core
 
 โดยการสร้าง table ต่างๆ ในฐานข้อมูลนั้น จะไม่ได้สร้างโดยตรง แต่ใช้ผ่าน Entity framework core ซึ่งเป็น ORM Mapper โดยเราเพียงสร้าง model (ก็คือ C# Class) ที่เราจะใช้เก็บข้อมูลต่างๆ และระบุความสัมพันธ์โดยใช้ convention, attribute, และ EF Core Fluent API จากนั้น EF Core จะทำการ generate SQL ที่จำเป็นเพื่อไปสั่ง PostgreSQL สร้างฐานข้อมูลและ table ทีเ่กี่ยวข้อง นอกจากนี้ยังสามารถ track entity ได้ด้วย ซึ่งก็คือ เวลาเราเปลี่ยน public proterty ของ instance ของ C# class นั้น ก็จะรู้ได้ว่า property ไหนเปลี่ยนและ generate SQL ที่จำเป็นในการอัพเดตเมื่อ `await context.SaveChangeAsync()`
 
-## Features ของโปรแกรทม
+## Features ของโปรแกรม
+
+### สถิติ + อัพเดตข้อมูลทุก ๆ 1 นาที เมื่อจำเป็น + ส่งสัญญาณการอัพเดตข้อมูลมายัง Client ด้วย SignalR
+
+<div className="image-container">
+  <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_1").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>สถิติภาพรวมK</p>
+    <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_2").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>สถิติรายกลุ่มงาน</p>
+    <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_3").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>สถิติรายแผนก</p>
+    <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_6").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>สถิติรายวัน สำหรับ Admin</p>
+</div>
+
+ระบบจะคำนวนสถิติเองทุกๆ 1 นาที เมื่อมีคนสส่งข้อมูล (และไม่คำนวนถ้าไม่มีข้อมูลใหม่) และเม่อคำนวนเสร็จจะแจ้ง Client ว่ามีข้อมูลใหม่ให้อัพเดตอัตโนมัติ
+
+```csharp
+var globalStats = entries.GroupBy(e => e.DepartmentId).Select(entryGroupedByDepartment => new GlobalDepartmentStatistic(
+    entryGroupedByDepartment.Key,
+    entryGroupedByDepartment.First().DepartmentName,
+    entryGroupedByDepartment.GroupBy(e => e.DivisionId)
+        .Select(entryGroupByDivision => new GlobalDivisionStatistic(
+            entryGroupByDivision.First().DivisionId,
+            entryGroupByDivision.First().DivisionName,
+            entryGroupByDivision.First().RiskGroup,
+            entryGroupByDivision.GroupBy(e => e.PersonId).Count(),
+                entryGroupByDivision
+                    .GroupBy(entry => new TestMonthYear(entry.TestDate.Month, entry.TestDate.Year))
+                    .Select(entriesGroupedByDate => new DivisionTestCompletenessPerMonthYear(
+                            entriesGroupedByDate.Key,
+                            entriesGroupedByDate.GroupBy(k => k.PersonId).Count(l => l.Count() >= entryGroupByDivision.First().DivisionTestsPerMonth),
+                            entriesGroupedByDate.GroupBy(k => k.PersonId).Count(l => l.Count() < entryGroupByDivision.First().DivisionTestsPerMonth)
+                        )).ToArray()
+        )).ToArray()
+    )).ToArray();
+lock (lockObject)
+{
+    CurrentGlobalStatisticSummary = new GlobalStatisticSummary(DateTimeOffset.Now, allTestsCount, allPositivesCount, thisMonthTestsCount, thisMonthPositivesCount, todayTestsCount, todayPositivesCount);
+    CurrentGlobalStatisticDetail = new GlobalStatisticDetail(CurrentGlobalStatisticSummary, globalStats);
+    CurrentDepartmentsStatistic = new DepartmentsStatistic(DateTimeOffset.Now, b);
+}
+```
+<p className="text-center">บางส่วนของการคำนวน</p>
+
+### กรอกฟอร์มและดูประวัติตนเอง และแก้ไขได้
+
+กรอกข้อมูลง่านยเพราะไม่ต้่องกรอกใหม่หมดทุกอย่าง และสามารถกลับมาแก้ไขได้
+
+<div className="image-container">
+  <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_4").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>กรอกฟอร์ม</p>
+    <GatsbyImage
+    image={
+      props.images.find((e) => e.name == "app_5").childImageSharp
+        .gatsbyImageData
+    }
+    alt="poster"
+  />
+  <p>ประวัติตนเอง</p>
+</div>
+
+### สมัครผู้ใช้งานใหม่เพิ่มเติมเองได้
+
+ถึงแม้ว่าผมจะสร้างบัญชีผู้ใช้ให้แบบอัตโนมัติ 2400 บัญชี แต่อย่างที่บอกถ้าไม่เคยตอบ Google form เลย ก็จะไม่มีรายชื่อ จึงต้องมีทำให้ผู้ใช้สามารถสมัครบัญชีเพิ่มเองได้
