@@ -1,4 +1,4 @@
-name: Build and Deploy to GitHUb Page
+name: Build and Deploy to GitHu b Page
 on: [push]
 jobs:
   build-and-deploy:

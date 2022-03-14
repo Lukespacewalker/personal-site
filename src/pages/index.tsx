@@ -107,7 +107,7 @@ export default class IndexPage extends React.Component<{ data: any }, {}> {
           ]}
         />
         <Section title="Web applications">
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex flex-col lg:flex-row gap-6">
             <a
               href="https://atk.doctortons.com"
               className={
