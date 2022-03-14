@@ -1,0 +1,42 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+
+export const frontmatter = {
+  type: "blog",
+  tag: "why-did-i-interest-in-com",
+  date: "2021-11-08 15:47",
+  title: "ทำไมถึงสนใจคอม",
+  authors: ["myself"],
+  excerpt:
+    "ทำไมถึงสนใจคอม",
+  background: "bg.jpg",
+  images: [
+    "asp.jpg",
+    "js.jpg"
+  ],
+};
+
+# ตอนที่ 1 
+
+ได้จับคอมพิวเตอร์ตอนแรกน่าจะ อนุบาล 1-2 คือทีทำงาน พ่อแม่ คือ สสจ. คอมจอขาวดำ มีปุ่ม TURBO (ซึ่งถ้ากดแล้วจริงๆ คอมจะช้าลง) ไปเล่น เกมกอล์ฟและต่อยมวย ที่ทำงานตอนเย็นๆ (ตอนนั้นยังมีพิมพ์ดีด ผมก็ชอบไปกดให้ก้านพิมพ์มันเข้ามาติดกัน สนุกดี)
+พ่อซื้อคอม CPU 80486 เลยได้เล่นคอมคือเล่นเกม ตอน อนุบาล 3 และเล่น Word กับ Powerpoint ตอน ป.1-2 คือเอา Clipart มาแปะๆ เป็นรูป และทำ slides อะไรมั่วๆไป
+แม่ซื้อหนังสือ HTML มาให้ลองทำตอนนั้นน่าจะ ป.1-2 ยังใช้ Windows 3.11 อยู่ ไม่มี Browser เลยเปิดไฟล์ HTML ไม่ได้
+พ่อซื้อคอม CPU Intel Pentium 3 500Mhz และ GPU NVIDIA RIVA TNT2 Model 64 ตอน ป.3 ตอนนั้นเป็น Windows 98-Me ก็ลองหัดเขียนเว็บโดยใช้ Microsoft FrontPage ซึ่งตอนนี้ไม่มีแล้ว และ Macromedia Dreamweaver (ตอนนี้เป็นของ Adobe ไปแล้ว) ตอนนั้นมันเป็นแบบ Drag drop ยังไม่เข้าใจ HTML เท่าไหร่ (ตอนนั้นมัน HTML3 มั้ง) แล้วอยากทำลุกเล่นเลยไปซื้อหนังสือ Javascript มาอ่านและก็ทำตาม (ถ้าหาหนังสือเจอจะถ่ายรูปให้ดู) จากนั้นเริ่มรู้ว่ามันต้องมีเบื้องหลัง ที่มันเรียกว่า CGI เลยไปซื้อหนังสือ ASP:Active Server Page 3.0 มาอ่าน แล้วลองทำตาม ปรากฎว่า Windows Me มันดันไม่มี IIS:Internet Information Service (ก็คือไม่มี Server) เลยรันไม่ได้  ก็พับไป
+
+<div className="image-container">
+  <div className="flex flex-col md:flex-row gap-3">
+  <GatsbyImage
+    image={props.images.find(e=>e.name=="asp").childImageSharp.gatsbyImageData}
+    alt="poster"
+  />
+  <GatsbyImage
+    image={props.images.find(e=>e.name=="js").childImageSharp.gatsbyImageData}
+    alt="poster"
+  />
+  </div>
+  <div>ภาพหนังสือ</div>
+</div>
+
+พอตอน ป.4 ได้ไปแข่งเขียน Homepage กับทีมเพื่อนักเรียนด้วยกัน โดยใช้ Dreamweaver ก็ได้รางวัลมาบ้าง (ไม่ใช่ที่ 1 นะ) และครูคอมก็เลี้ยง Pizza และตอนป.4 ปี 2001 Windows XP มันออก เลยอัพคอม Pentium 3 ที่บ้าน (อัพเองไม่เคยไปร้านเพื่อให้ลง Software อะไรทั้งนั้น) แล้วตอนติดตั้งมันมี IIS ให้ลงด้วย ดีใจมาก เลยได้ลองเอา ASP ที่เขียนไว้ มาทำ ก็ลองทำตามมันก็สอนพวก ทำเว็บบอร์ดอัพรูป
+ส่วนอื่น ที่ไม่ได้ทำพวกนี้ก็ เล่นเกม
+
+# จบตอนที่ 1

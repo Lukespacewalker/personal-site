@@ -1,0 +1,29 @@
+import { GatsbyImage } from "gatsby-plugin-image";
+import { Link } from "gatsby";
+
+export const frontmatter = {
+	type: "project",
+	tag: "atk-system",
+	date: "2022-03-09 17:24",authors: ["myself"],
+	title: "ระบบข้อมูล ATK",
+	excerpt: "ระบบบันทึกและสถิติการตรวจ ATK ที่ทำตอนอยู่กลุ่มงานอาชีวเวชกรรม",
+	background: "atk-system.jpg"
+}
+
+# ที่มา
+
+อ่านได้ที่ <Link to="/blogs/2022/march/atk-system">กว่าจะเป็นระบบข้อมูล ATK</Link>
+
+# Technology stack ที่ใช้
+## Front End
+
+- Blazor Webassembly 
+
+## Back End
+
+- Asp.Net Core (.NET 6)
+- PostgreSQL โดยสร้างฐานข้อมูลแบบ Code-First โดยใช้ Entity Framework Core
+
+## สถานะปัจจุบัน
+
+สามารถเข้าดูได้ที่ [atk.doctortons.com](https://atk.doctortons.com)
