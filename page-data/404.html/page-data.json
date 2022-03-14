@@ -1,0 +1,5 @@
+{
+    "componentChunkName": "component---src-pages-404-tsx",
+    "path": "/404.html",
+    "result": {"data":{"file":{"childImageSharp":{"gatsbyImageData":{"layout":"fullWidth","backgroundColor":"#282818","images":{"fallback":{"src":"/static/0123413e0bda7169bd6e46ad4ffbf12e/bbb25/404.jpg","srcSet":"/static/0123413e0bda7169bd6e46ad4ffbf12e/9a68d/404.jpg 750w,\n/static/0123413e0bda7169bd6e46ad4ffbf12e/f9710/404.jpg 1080w,\n/static/0123413e0bda7169bd6e46ad4ffbf12e/f655d/404.jpg 1366w,\n/static/0123413e0bda7169bd6e46ad4ffbf12e/bbb25/404.jpg 1920w","sizes":"100vw"},"sources":[{"srcSet":"/static/0123413e0bda7169bd6e46ad4ffbf12e/7c01c/404.webp 750w,\n/static/0123413e0bda7169bd6e46ad4ffbf12e/5fc23/404.webp 1080w,\n/static/0123413e0bda7169bd6e46ad4ffbf12e/80858/404.webp 1366w,\n/static/0123413e0bda7169bd6e46ad4ffbf12e/9489a/404.webp 1920w","type":"image/webp","sizes":"100vw"}]},"width":1,"height":0.6067708333333334}}}},"pageContext":{}},
+    "staticQueryHashes": []}
